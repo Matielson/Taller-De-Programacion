@@ -24,8 +24,8 @@ Incluye material útil para practicar programación, reforzar conceptos y prepar
 - Prácticas guiadas y ejercicios
 
 ## 📂 Organización del repositorio
-El contenido se encuentra organizado por módulos y/o prácticas, por ejemplo:
+El contenido se encuentra organizado por módulos y/o prácticas.
 
 ## 👤 Autor
-**Matías Núñez**  
+**Mati Nuñez**  
 Estudiante de Licenciatura en Sistemas – UNLP
