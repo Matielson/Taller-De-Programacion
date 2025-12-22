@@ -1,0 +1,76 @@
+programa ejercicio4.a
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+robots
+  robot juntador
+  variables
+    termino: boolean
+    avInicial: numero
+    caInicial: numero
+    quienSoy: numero
+  comenzar
+    termino:= F
+    avInicial:= PosAv
+    caInicial:= PosCa
+    RecibirMensaje(quienSoy, coordi)
+    mientras (termino = F)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      si (HayFlorEnLaEsquina)
+        tomarFlor
+      si (~HayFlorEnLaEsquina)
+        termino:= V
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      LiberarEsquina(10,10)
+      si (HayFlorEnLaBolsa)
+        depositarFlor
+      Pos(avInicial, caInicial)
+      LiberarEsquina(11,11)
+    EnviarMensaje(termino, coordi)
+    EnviarMensaje(quienSoy, coordi)
+  fin
+  
+  robot coordinador
+  variables
+    termino: boolean
+    quienEs: numero
+  comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, r3)
+    EnviarMensaje(4, r4)
+    RecibirMensaje(termino, *)
+    RecibirMensaje(quienEs, *)
+    RecibirMensaje(termino, *)
+    RecibirMensaje(quienEs, *)
+    RecibirMensaje(termino, *)
+    RecibirMensaje(quienEs, *)
+    RecibirMensaje(termino, *)
+    RecibirMensaje(quienEs, *)
+    Informar(quienEs)
+    Pos(11,11)
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  
+variables
+  r1: juntador
+  r2: juntador
+  r3: juntador
+  r4: juntador
+  coordi: coordinador
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  AsignarArea(r4, ciudad)
+  AsignarArea(coordi, ciudad)
+  Iniciar(r1, 9,9)
+  Iniciar(r2, 9,10)
+  Iniciar(r3, 9,11)
+  Iniciar(r4, 9,12)
+  Iniciar(coordi, 1,1)
+fin

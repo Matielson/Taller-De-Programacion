@@ -1,0 +1,268 @@
+# EJERCICIO 1.a
+
+programa ejercicio1.a
+procesos
+  proceso recorrerAvenidaYJuntar(E desde: numero; E hasta:numero; ES cantFlores: numero)
+  variables
+    cantEsq: numero
+  comenzar
+    cantEsq:= (hasta - desde + 1)
+    repetir cantEsq
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlores:= cantFlores + 1
+      mover
+  fin
+  
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+  
+robots
+
+  robot tipo1
+  variables
+    cantFloresTotal: numero
+    cantFloresOtro: numero
+  comenzar
+    cantFloresTotal:= 0
+    recorrerAvenidaYJuntar(1,10,cantFloresTotal)
+    EnviarMensaje(cantFloresTotal, r2)
+    RecibirMensaje(cantFloresOtro, r2)
+    si (cantFloresTotal > cantFloresOtro)
+      Informar(cantFloresTotal-cantFloresOtro)
+  fin
+  
+  robot tipo2
+  variables
+    cantFloresTotal: numero
+    cantFloresOtro: numero
+  comenzar
+    cantFloresTotal:= 0
+    recorrerAvenidaYJuntar(11,20,cantFloresTotal)
+    EnviarMensaje(cantFloresTotal, r1)
+    RecibirMensaje(cantFloresOtro, r1)
+    si (cantFloresTotal > cantFloresOtro)
+      Informar(cantFloresTotal-cantFloresOtro)
+  fin
+  
+  
+  
+variables
+  r1: tipo1
+  r2: tipo2
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  Iniciar(r1, 1,1)
+  Iniciar(r2, 2,11)
+fin
+
+
+# EJERCICIO 1.b
+
+programa ejercicio1.b
+procesos
+  proceso recorrerAvenidaYJuntar(E desde: numero; E hasta:numero; ES cantFlores: numero)
+  variables
+    cantEsq: numero
+  comenzar
+    cantEsq:= (hasta - desde + 1)
+    repetir cantEsq
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlores:= cantFlores + 1
+      mover
+  fin
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+  
+robots
+
+  robot juntador1
+  variables
+    cantFloresTotal: numero
+  comenzar
+    cantFloresTotal:= 0
+    recorrerAvenidaYJuntar(1,10,cantFloresTotal)
+    EnviarMensaje(cantFloresTotal, r3)
+  fin
+  
+  robot juntador2
+  variables
+    cantFloresTotal: numero
+  comenzar
+    cantFloresTotal:= 0
+    recorrerAvenidaYJuntar(11,20,cantFloresTotal)
+    EnviarMensaje(cantFloresTotal, r3)
+  fin
+  
+  robot fiscalizador
+  variables
+    cantRobot1: numero
+    cantRobot2: numero
+  comenzar
+    RecibirMensaje(cantRobot1, r1)
+    RecibirMensaje(cantRobot2, r2)
+    si (cantRobot1 > cantRobot2)
+      Informar(cantRobot1-cantRobot2)
+    si (cantRobot2 > cantRobot1)
+      Informar(cantRobot2-cantRobot1)
+  fin
+  
+variables
+  r1: juntador1
+  r2: juntador2
+  r3: fiscalizador
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  Iniciar(r1, 1,1)
+  Iniciar(r2, 2,11)
+  Iniciar(r3, 2,1)
+fin
+
+# EJERCICIO 1.c y 1.d
+
+programa ejercicio1.c.d
+procesos
+  proceso recorrerAvenidaYJuntar(E desde: numero; E hasta:numero; ES cantFlores: numero)
+  variables
+    cantEsq: numero
+  comenzar
+    cantEsq:= (hasta - desde + 1)
+    repetir cantEsq
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlores:= cantFlores + 1
+      mover
+  fin
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+  
+robots
+
+  robot juntador1
+  variables
+    cantFloresTotal: numero
+  comenzar
+    cantFloresTotal:= 0
+    recorrerAvenidaYJuntar(1,10,cantFloresTotal)
+    EnviarMensaje(cantFloresTotal, r7)
+  fin
+  
+  robot juntador2
+  variables
+    cantFloresTotal: numero
+  comenzar
+    cantFloresTotal:= 0
+    recorrerAvenidaYJuntar(11,20,cantFloresTotal)
+    EnviarMensaje(cantFloresTotal, r7)
+  fin
+  
+  robot juntador3
+  variables
+    cantFloresTotal: numero
+  comenzar
+    cantFloresTotal:= 0
+    recorrerAvenidaYJuntar(21,30,cantFloresTotal)
+    EnviarMensaje(cantFloresTotal, r7)
+  fin
+  
+  robot juntador4
+  variables
+    cantFloresTotal: numero
+  comenzar
+    cantFloresTotal:= 0
+    recorrerAvenidaYJuntar(31,40,cantFloresTotal)
+    EnviarMensaje(cantFloresTotal, r7)
+  fin
+  
+  robot juntador5
+  variables
+    cantFloresTotal: numero
+  comenzar
+    cantFloresTotal:= 0
+    recorrerAvenidaYJuntar(41,50,cantFloresTotal)
+    EnviarMensaje(cantFloresTotal, r7)
+  fin
+  
+  robot juntador6
+  variables
+    cantFloresTotal: numero
+  comenzar
+    cantFloresTotal:= 0
+    recorrerAvenidaYJuntar(51,60,cantFloresTotal)
+    EnviarMensaje(cantFloresTotal, r7)
+  fin
+  
+  robot fiscalizador
+  variables
+    cantRobot1: numero
+    cantRobot2: numero
+    cantRobot3: numero
+    cantRobot4: numero
+    cantRobot5: numero
+    cantRobot6: numero
+    maxActual: numero
+    ganadorActual: numero
+  comenzar
+    maxActual:= -1
+    RecibirMensaje(cantRobot1, r1)
+    RecibirMensaje(cantRobot2, r2)
+    RecibirMensaje(cantRobot3, r3)
+    RecibirMensaje(cantRobot4, r4)
+    RecibirMensaje(cantRobot5, r5)
+    RecibirMensaje(cantRobot6, r6)
+    si (cantRobot1 > maxActual)
+      maxActual:= cantRobot1
+      ganadorActual:= 1
+    si (cantRobot2 > maxActual)
+      maxActual:= cantRobot2
+      ganadorActual:= 2
+    si (cantRobot3 > maxActual)
+      maxActual:= cantRobot3
+      ganadorActual:= 3
+    si (cantRobot4 > maxActual)
+      maxActual:= cantRobot4
+      ganadorActual:= 4
+    si (cantRobot5 > maxActual)
+      maxActual:= cantRobot5
+      ganadorActual:= 5     
+    si (cantRobot6 > maxActual)      
+      maxActual:= cantRobot6
+      ganadorActual:= 6
+    Informar(maxActual)
+    Informar(ganadorActual)
+  fin
+  
+variables
+  r1: juntador1
+  r2: juntador2
+  r3: juntador3
+  r4: juntador4
+  r5: juntador5
+  r6: juntador6
+  r7: fiscalizador
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  AsignarArea(r4, ciudad)
+  AsignarArea(r5, ciudad)
+  AsignarArea(r6, ciudad)
+  AsignarArea(r7, ciudad)
+  Iniciar(r1, 1,1)
+  Iniciar(r2, 2,11)
+  Iniciar(r3, 3,21)
+  Iniciar(r4, 4,31)
+  Iniciar(r5, 5,41)
+  Iniciar(r6, 6,51)
+  Iniciar(r7, 2,1)
+fin

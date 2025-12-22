@@ -1,0 +1,98 @@
+programa ejercicio4
+procesos
+  proceso limpiarEsquina
+  variables
+    av: numero
+    ca: numero
+  comenzar
+    Random(ca, 25, 75)
+    Random(av, 25, 75)
+    Pos(av,ca)
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+areas
+  areaFiscalizador: AreaP (1,1,1,1)
+  areaRecolector1: AreaP (25,1,25,1)
+  areaRecolector2: AreaP (30,1,30,1)
+  areaRecolector3: AreaP (35,1,35,1)
+  areaRecolector4: AreaP (40,1,40,1)
+  cuadrante: AreaPC (25,25,75,75)
+robots
+  robot recolector
+  variables
+    avActual: numero
+    arrancar: boolean
+    termine: boolean
+    ID: numero
+  comenzar
+    avActual:= PosAv
+    RecibirMensaje(ID, fisc)
+    RecibirMensaje(arrancar, fisc)
+    mientras (arrancar = V)
+      limpiarEsquina
+      Pos(avActual, 1)
+      termine:= V
+      EnviarMensaje(termine, fisc)
+      RecibirMensaje(arrancar, fisc)
+  fin
+  
+  robot fiscalizador
+  variables
+    start: boolean
+    end: boolean
+    seguir: boolean
+    idActual: numero
+  comenzar
+    start:= V
+    end:= F
+    EnviarMensaje(1, rec1)
+    EnviarMensaje(2, rec2)
+    EnviarMensaje(3, rec3)
+    EnviarMensaje(4, rec4)
+    repetir 10
+      Random(idActual, 1, 4)
+      si (idActual = 1)
+        EnviarMensaje(start, rec1)
+        RecibirMensaje(seguir, rec1)
+      si (idActual = 2)
+        EnviarMensaje(start, rec2)
+        RecibirMensaje(seguir, rec2)
+      si (idActual = 3)
+        EnviarMensaje(start, rec3)
+        RecibirMensaje(seguir, rec3)
+      si (idActual = 4)
+        EnviarMensaje(start, rec4)
+        RecibirMensaje(seguir, rec4)
+    EnviarMensaje(end, rec1)
+    EnviarMensaje(end, rec2)
+    EnviarMensaje(end, rec3)
+    EnviarMensaje(end, rec4)
+  fin
+  
+  
+  
+variables
+  rec1: recolector
+  rec2: recolector
+  rec3: recolector
+  rec4: recolector
+  fisc: fiscalizador
+comenzar
+  AsignarArea(rec1, areaRecolector1)
+  AsignarArea(rec2, areaRecolector2)
+  AsignarArea(rec3, areaRecolector3)
+  AsignarArea(rec4, areaRecolector4)
+  AsignarArea(rec1, cuadrante)
+  AsignarArea(rec2, cuadrante)
+  AsignarArea(rec3, cuadrante)
+  AsignarArea(rec4, cuadrante)
+  AsignarArea(fisc, areaFiscalizador)
+  Iniciar(fisc, 1,1)
+  Iniciar(rec1, 25,1)
+  Iniciar(rec2, 30,1)
+  Iniciar(rec3, 35,1)
+  Iniciar(rec4, 40,1)
+fin

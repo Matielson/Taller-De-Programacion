@@ -1,0 +1,122 @@
+programa ejercicio1
+
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+robots
+  robot cliente
+  variables
+    ID: numero
+    cantFlores: numero
+    seguir: boolean
+    avInicial, caInicial, caSiguiente: numero
+  comenzar
+    RecibirMensaje(ID, servidor)
+    mientras (PosCa < 100)
+      avInicial:= PosAv
+      caInicial:= PosCa
+      caSiguiente:= (PosCa + 1)
+      
+      { Calculo la cantidad de flores que quiero recibir }
+      Random(cantFlores,1,4)
+      
+      { Envio los datos al servidor }
+      EnviarMensaje(ID, servidor)
+      EnviarMensaje(cantFlores, servidor)
+      EnviarMensaje(avInicial, servidor)
+      EnviarMensaje(caSiguiente, servidor)
+      
+      { Espero la confirmacion de que ya sirvio las flores }
+      RecibirMensaje(seguir, servidor)
+      
+      { Voy a la esquina y busco las flores }
+      mover
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+      Pos(avInicial, caInicial)
+      
+      { Deposito las flores una a una a lo largo de la avenida }
+      mientras ((PosCa < 100) & (HayFlorEnLaBolsa))
+        depositarFlor
+        mover
+    
+    { Una vez que complete la avenida, mando al servidor que ya termine }
+    EnviarMensaje(ID, servidor)
+    EnviarMensaje(0, servidor)
+      
+  fin
+  
+  robot servidor
+  variables
+    ID: numero
+    cantFlores: numero
+    av,ca: numero
+    cantRobotsTerminados: numero
+  comenzar
+    EnviarMensaje(1, cli1)
+    EnviarMensaje(2, cli2)
+    EnviarMensaje(3, cli3)
+    
+    mientras (cantRobotsTerminados < 3)
+      { Recibo un ID de cualquiera }
+      RecibirMensaje(ID, *)
+      
+      { Dependiendo el ID que sea, obtengo los datos que necesito }
+      si (ID = 1)
+        RecibirMensaje(cantFlores, cli1)
+      sino
+        si (ID = 2)
+          RecibirMensaje(cantFlores, cli2)
+        sino
+          RecibirMensaje(cantFlores, cli3)
+          
+      { Si no termine (cantFlores no es 0), recibo la avenida y la calle del cliente. }
+      si (cantFlores <> 0)
+      
+        si (ID = 1)
+          RecibirMensaje(av, cli1)
+          RecibirMensaje(ca, cli1)
+        sino
+          si (ID = 2)
+            RecibirMensaje(av, cli2)
+            RecibirMensaje(ca, cli2)
+          sino
+            RecibirMensaje(av, cli3)
+            RecibirMensaje(ca, cli3)
+        
+        { Deposito la cantidad pedida en la esquina pedida }
+        BloquearEsquina(av,ca)
+        Pos(av,ca)
+        repetir cantFlores
+          depositarFlor
+        Pos(100,100)
+        LiberarEsquina(av,ca)
+        
+        { Dependiendo el ID que sea, mando un mensaje para indicar que ya termine de servir las flores }
+        si (ID = 1)
+          EnviarMensaje(V, cli1)
+        sino
+          si (ID = 2)
+            EnviarMensaje(V, cli2)
+          sino
+            EnviarMensaje(V, cli3)      
+
+      si (cantFlores = 0)
+        cantRobotsTerminados:= cantRobotsTerminados + 1
+  fin
+  
+variables
+  cli1: cliente
+  cli2: cliente
+  cli3: cliente
+  servidor: servidor
+comenzar
+  AsignarArea(cli1, ciudad)
+  AsignarArea(cli2, ciudad)
+  AsignarArea(cli3, ciudad)
+  AsignarArea(servidor, ciudad)
+  Iniciar(servidor, 100,100)
+  Iniciar(cli1, 1,1)
+  Iniciar(cli2, 2,1)
+  Iniciar(cli3, 3,1)
+fin

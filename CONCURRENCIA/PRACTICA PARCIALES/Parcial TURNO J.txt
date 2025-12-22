@@ -1,0 +1,179 @@
+Tres robots deben realizar 3 escalones de 4x3 cada uno. Un robot fiscalizador deberá indicar a cada robot qué tarea debe realizar, de manera aleatoria, en cada escalón. Las tareas posibles son dos: juntar todas las flores o juntar todos los papeles.
+
+Al finalizar los 3 escalones, cada robot deberá depositar de a una las flores en el depósito de flores ubicado en la esquina (99,99) y de a uno los papeles en el depósito de papeles de la esquina (98,98).
+
+Una vez que los tres robots completaron los 3 escalones, el fiscalizador deberá vaciar el depósito que menos objetos tiene.
+
+El fiscalizador inicia en la esquina (1,1), y los robots papeleros inician en las esquinas (2,1), (32,1) y (62,1) respectivamente.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+programa ParcialTurnoJ
+procesos
+
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+
+  proceso hacerTareaUno (ES f: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      f:= f + 1
+  fin
+  
+  proceso hacerTareaDos (ES p: numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      p:= p + 1
+  fin
+  
+  proceso hacerTarea (E tarea: numero; ES cantFlores: numero; ES cantPapeles: numero)
+  comenzar
+    si (tarea = 1)
+      hacerTareaUno(cantFlores)
+    sino
+      hacerTareaDos(cantPapeles)
+  fin
+  
+  proceso hacerEscalon(E tarea: numero; ES cantFlores: numero; ES cantPapeles: numero)
+  comenzar
+    repetir 4
+      hacerTarea(tarea, cantFlores, cantPapeles)
+      mover
+    derecha
+    repetir 3
+      hacerTarea(tarea, cantFlores, cantPapeles)
+      mover
+    izquierda
+  fin
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot recolector
+  variables
+    ID: numero
+    tarea: numero
+    totalFlores, totalPapeles: numero
+    terminamos: boolean
+    avInicial, caInicial: numero
+  comenzar
+    totalFlores:= 0
+    totalPapeles:= 0
+    RecibirMensaje(ID, robotFiscalizador)
+    
+    repetir 3
+      EnviarMensaje(ID, robotFiscalizador)
+      RecibirMensaje(tarea, robotFiscalizador)
+      hacerEscalon(tarea, totalFlores, totalPapeles)
+    hacerTarea(tarea, totalFlores, totalPapeles)
+    
+    avInicial:= PosAv
+    caInicial:= PosCa
+    
+    si (HayFlorEnLaBolsa)
+      BloquearEsquina(99,99)
+      Pos(99,99)
+      mientras (HayFlorEnLaBolsa)
+        depositarFlor
+      Pos(avInicial, caInicial)
+      LiberarEsquina(99,99)
+      
+    si (HayPapelEnLaBolsa)
+      BloquearEsquina(98,98)
+      Pos(98,98)
+      mientras (HayPapelEnLaBolsa)
+        depositarPapel
+      Pos(avInicial, caInicial)
+      LiberarEsquina(98,98)
+      
+      
+    EnviarMensaje(0, robotFiscalizador)
+    RecibirMensaje(terminamos, robotFiscalizador)
+    EnviarMensaje(ID, robotFiscalizador)
+    EnviarMensaje(totalFlores, robotFiscalizador)
+    EnviarMensaje(totalPapeles, robotFiscalizador)
+  fin
+  
+  robot fiscalizador
+  variables
+    ID: numero
+    tarea: numero
+    cantFlores, cantPapeles: numero
+    cantFloresTotal, cantPapelesTotal: numero
+    robotsTerminados: numero
+  comenzar
+    robotsTerminados:= 0
+    cantFloresTotal:= 0
+    cantPapelesTotal:= 0
+    EnviarMensaje(1, robotRecolector1)
+    EnviarMensaje(2, robotRecolector2)
+    EnviarMensaje(3, robotRecolector3)
+    
+    mientras (robotsTerminados < 3)
+      RecibirMensaje(ID, *)
+      si (ID <> 0)
+        Random(tarea, 1,2)
+        si (ID = 1)
+          EnviarMensaje(tarea, robotRecolector1)
+        sino
+          si (ID = 2)
+            EnviarMensaje(tarea, robotRecolector2)
+          sino
+            EnviarMensaje(tarea, robotRecolector3)
+      sino
+        robotsTerminados:= robotsTerminados + 1
+    
+    EnviarMensaje(V, robotRecolector1)
+    EnviarMensaje(V, robotRecolector2)
+    EnviarMensaje(V, robotRecolector3)
+    
+    repetir 3
+      RecibirMensaje(ID, *)
+      si (ID = 1)
+        RecibirMensaje(cantFlores, robotRecolector1)
+        RecibirMensaje(cantPapeles, robotRecolector1)
+        cantFloresTotal:= cantFloresTotal + cantFlores
+        cantPapelesTotal:= cantPapelesTotal + cantPapeles    
+      sino
+        si (ID = 2)
+          RecibirMensaje(cantFlores, robotRecolector2)
+          RecibirMensaje(cantPapeles, robotRecolector2)
+          cantFloresTotal:= cantFloresTotal + cantFlores
+          cantPapelesTotal:= cantPapelesTotal + cantPapeles    
+        sino
+          RecibirMensaje(cantFlores, robotRecolector3)
+          RecibirMensaje(cantPapeles, robotRecolector3)
+          cantFloresTotal:= cantFloresTotal + cantFlores
+          cantPapelesTotal:= cantPapelesTotal + cantPapeles   
+    
+    si (cantPapelesTotal < cantFloresTotal)
+      Pos(98,98)
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+    sino
+      Pos(99,99)
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+  fin
+  
+variables
+  robotRecolector1: recolector
+  robotRecolector2: recolector
+  robotRecolector3: recolector
+  
+  robotFiscalizador: fiscalizador
+comenzar
+  AsignarArea(robotRecolector1, ciudad)
+  AsignarArea(robotRecolector2, ciudad)
+  AsignarArea(robotRecolector3, ciudad)
+  AsignarArea(robotFiscalizador, ciudad)
+  Iniciar(robotRecolector1, 2,1)
+  Iniciar(robotRecolector2, 32,1)
+  Iniciar(robotRecolector3, 62,1)
+  Iniciar(robotFiscalizador, 1,1)
+fin

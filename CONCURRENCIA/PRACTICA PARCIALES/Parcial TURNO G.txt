@@ -1,0 +1,155 @@
+Dos robots recolectores deben limpiar las esquinas de las avenidas 4 a la 11. Uno de los robots limpiará las avenidas pares, y el otro las impares. 
+Cada vez que finalizan una avenida, deberán depositar de a uno todo lo recolectado en una esquina aleatoria indicada por un robot coordinador, 
+comprendida entre las esquinas (40,40) y (45,45).
+
+Una vez que ambos robots finalizaron, el robot coordinador deberá limpiar todas las esquinas del cuadrante comprendido entre las esquinas (40,40) y (45,45), 
+e informar qué robot recolector finalizó primero.
+
+Los robots recolectores inician en la esquina (4,1) y (5,1), y el robot coordinador en la esquina (1,1).
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+programa ParcialTurnoG
+procesos
+  proceso limpiarAvenida
+  comenzar
+    mientras (PosCa < 100)
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+      mover
+      
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  
+  proceso depositarTodo(E av: numero; E ca: numero)
+  comenzar
+    Pos(av, ca)
+    mientras (HayPapelEnLaBolsa)
+      depositarPapel
+    mientras (HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+  
+  proceso limpiar5Esquinas
+  comenzar
+    repetir 5
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+      mover
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  
+  
+areas
+  areaRecolectores: AreaPC (4,1,11,100)
+  areaInicioCoordinador: AreaP (1,1,1,1)
+  areaCuadrante: AreaC (40,40,45,45)
+  
+  
+robots
+  robot recolector
+  variables
+    av,ca, avInicial, caInicial: numero
+    quienSoy: numero
+  comenzar
+    RecibirMensaje(quienSoy, robotCoordinador)
+    repetir 3
+      avInicial:= PosAv
+      limpiarAvenida
+      EnviarMensaje(quienSoy, robotCoordinador)
+      EnviarMensaje(V, robotCoordinador)
+      RecibirMensaje(av, robotCoordinador)
+      RecibirMensaje(ca, robotCoordinador)
+      BloquearEsquina(av,ca)
+      depositarTodo(av,ca)
+      Pos(avInicial + 2,1)
+      LiberarEsquina(av,ca)
+    limpiarAvenida
+    avInicial:= PosAv
+    caInicial:= PosCa
+    EnviarMensaje(quienSoy, robotCoordinador)
+    EnviarMensaje(V, robotCoordinador)
+    RecibirMensaje(av, robotCoordinador)
+    RecibirMensaje(ca, robotCoordinador)
+    BloquearEsquina(av,ca)
+    depositarTodo(av,ca)
+    Pos(avInicial,caInicial)
+    LiberarEsquina(av,ca)
+    EnviarMensaje(quienSoy, robotCoordinador)
+    EnviarMensaje(F, robotCoordinador)
+    
+  fin
+  
+  robot coordinador
+  variables
+    cantRobotsFinalizados: numero
+    ID, primerID: numero
+    av, ca: numero
+    seguir: boolean
+  comenzar
+    cantRobotsFinalizados:= 0
+    EnviarMensaje(1, robotRecolector1)
+    EnviarMensaje(2, robotRecolector2)
+    mientras (cantRobotsFinalizados < 2)
+      RecibirMensaje(ID, *)
+      si (ID = 1)
+        RecibirMensaje(seguir, robotRecolector1)
+        si (seguir = V)
+          Random(av, 40,45)
+          Random(ca, 40,45)
+          EnviarMensaje(av, robotRecolector1)
+          EnviarMensaje(ca, robotRecolector1)
+        sino
+          si (cantRobotsFinalizados = 0)
+            primerID:= ID
+          cantRobotsFinalizados:= cantRobotsFinalizados + 1
+          
+      sino
+        RecibirMensaje(seguir, robotRecolector2)
+        si (seguir = V)
+          Random(av, 40,45)
+          Random(ca, 40,45)
+          EnviarMensaje(av, robotRecolector2)
+          EnviarMensaje(ca, robotRecolector2)
+        sino
+          si (cantRobotsFinalizados = 0)
+            primerID:= ID
+          cantRobotsFinalizados:= cantRobotsFinalizados + 1 
+      
+        
+    Pos(40,40)  
+    repetir 5
+      limpiar5Esquinas
+      Pos(PosAv + 1, 40)
+    limpiar5Esquinas
+    
+    Informar(primerID)
+  fin
+  
+variables
+  robotRecolector1: recolector
+  robotRecolector2: recolector
+  robotCoordinador: coordinador
+comenzar
+  AsignarArea(robotRecolector1, areaRecolectores)
+  AsignarArea(robotRecolector2, areaRecolectores)
+  AsignarArea(robotCoordinador, areaInicioCoordinador)
+  
+  AsignarArea(robotRecolector1, areaCuadrante)
+  AsignarArea(robotRecolector2, areaCuadrante)
+  AsignarArea(robotCoordinador, areaCuadrante)
+  
+  Iniciar(robotRecolector1, 4,1)
+  Iniciar(robotRecolector2, 5,1)
+  Iniciar(robotCoordinador, 1,1)
+fin

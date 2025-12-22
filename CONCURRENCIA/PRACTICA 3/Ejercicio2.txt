@@ -1,0 +1,143 @@
+programa ejercicio2
+procesos
+  proceso hacerEscalonDerFlores(E medida: numero; ES cantVerticesFlores: numero)
+  comenzar
+    repetir 2
+      repetir medida
+        mover
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        cantVerticesFlores:= cantVerticesFlores + 1
+      derecha
+  fin
+  
+  proceso hacerEscalonIzqPapeles(E medida: numero; ES cantVerticesPapeles: numero)
+  comenzar
+    repetir 2
+      repetir medida
+        mover
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+        cantVerticesPapeles:= cantVerticesPapeles + 1
+      repetir 3
+        derecha
+  fin
+  
+  proceso hacerEscalonFloresInv(E medida: numero; ES cantVerticesFlores: numero)
+  comenzar
+    repetir 2
+      repetir medida
+        mover
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        cantVerticesFlores:= cantVerticesFlores + 1
+      derecha
+  fin
+  
+  proceso hacerEscalonPapelesInv(E medida: numero; ES cantVerticesPapeles: numero)
+  comenzar
+    repetir 2
+      repetir medida
+        mover
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+        cantVerticesPapeles:= cantVerticesPapeles + 1
+      repetir 3
+        derecha
+  fin
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+robots
+  robot robot1
+  variables
+    cantFlores: numero
+    i: numero
+    quienSoy: numero
+    termine: numero
+  comenzar
+    RecibirMensaje(quienSoy, jefe)
+    cantFlores:= 0
+    i:= 6
+    mientras (i <> 2)
+      i:= i - 1
+      hacerEscalonDerFlores(i,cantFlores)
+      repetir 2
+        derecha
+    BloquearEsquina(16,16)
+    hacerEscalonDerFlores(1, cantFlores)
+    EnviarMensaje(quienSoy, jefe)
+    derecha
+    mover
+    LiberarEsquina(16,16)
+    i:= 1
+    repetir 4
+      i:= i + 1
+      hacerEscalonFloresInv(i, cantFlores)
+      repetir 2
+        derecha
+    Informar(cantFlores)
+    EnviarMensaje(termine, jefe)
+  fin
+  
+  robot robot2
+  variables
+    cantPapeles: numero
+    i: numero
+    quienSoy: numero
+    termine: boolean
+  comenzar
+    RecibirMensaje(quienSoy, jefe)
+    cantPapeles:= 0
+    i:= 6  
+    mientras (i <> 2)
+      i:= i - 1
+      hacerEscalonIzqPapeles(i, cantPapeles)
+      repetir 2
+        derecha
+    BloquearEsquina(16,16)
+    hacerEscalonIzqPapeles(1, cantPapeles)
+    EnviarMensaje(quienSoy, jefe)
+    repetir 3
+      derecha
+    mover
+    LiberarEsquina(16,16)
+    i:= 1
+    repetir 4
+      i:= i + 1
+      hacerEscalonPapelesInv(i, cantPapeles)
+      repetir 2
+        derecha
+    Informar(cantPapeles)
+    EnviarMensaje(termine, jefe)
+  fin
+  
+  robot jefe
+  variables
+    ganador: numero
+    perdedor: numero
+    aviso: boolean
+  comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    RecibirMensaje(ganador, *)
+    RecibirMensaje(perdedor, *)
+    RecibirMensaje(aviso, *)
+    RecibirMensaje(aviso, *)
+    Informar(ganador)
+  fin
+  
+  
+variables
+  r1: robot1
+  r2: robot2
+  jefe: jefe
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(jefe, ciudad)
+  Iniciar(r1, 1,1)
+  Iniciar(r2, 31,1)
+  Iniciar(jefe, 15,1)
+fin

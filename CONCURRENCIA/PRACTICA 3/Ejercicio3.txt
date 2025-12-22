@@ -1,0 +1,112 @@
+programa ejercicio3
+procesos
+  proceso limpiarFlorEsq(E numAv: numero; E numCa: numero; ES cantFlores: numero; ES vacio: boolean)
+  comenzar
+    Pos(numAv, numCa)
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+    sino
+      vacio:= V
+  fin
+  
+areas
+  AreaComun: AreaPC (2,2,10,10)
+  AreaJefe: AreaP (1,1,1,1)
+  AreaLimpiador1: AreaP (2,1,2,1)
+  AreaLimpiador2: AreaP (3,1,3,1)
+  AreaLimpiador3: AreaP (4,1,4,1)
+  AreaLimpiador4: AreaP (5,1,5,1)
+  
+  
+robots
+  robot limpiador
+  variables
+    av: numero
+    ca: numero
+    avActual: numero
+    caActual: numero
+    cantFlores: numero
+    vacia: boolean
+  comenzar
+    cantFlores:= 0
+    vacia:= F
+    RecibirMensaje(av,jefe)
+    RecibirMensaje(ca,jefe)
+    avActual:= PosAv
+    caActual:= PosCa
+    mientras (vacia = F)
+      BloquearEsquina(av,ca)
+      limpiarFlorEsq(av,ca, cantFlores, vacia)
+      Pos(avActual,caActual)
+      LiberarEsquina(av,ca)
+    EnviarMensaje(cantFlores, jefe)
+  fin
+  
+  robot jefe
+  variables
+    avenida: numero
+    calle: numero
+    Flores1: numero
+    Flores2: numero
+    Flores3: numero
+    Flores4: numero
+    max: numero
+    robotMax: numero
+  comenzar
+    Random(avenida, 2,10)
+    Random(calle, 2,10)
+    max:= -1
+    EnviarMensaje(avenida,r1)
+    EnviarMensaje(calle,r1)
+    EnviarMensaje(avenida,r2)
+    EnviarMensaje(calle,r2)
+    EnviarMensaje(avenida,r3)
+    EnviarMensaje(calle,r3)
+    EnviarMensaje(avenida,r4)
+    EnviarMensaje(calle,r4)
+    RecibirMensaje(Flores1, r1)
+    RecibirMensaje(Flores2, r2)
+    RecibirMensaje(Flores3, r3)
+    RecibirMensaje(Flores4, r4)
+    si (Flores1 > max)
+      max:= Flores1
+    si (Flores2 > max)
+      max:= Flores2
+    si (Flores3 > max)
+      max:= Flores3
+    si (Flores4 > max)
+      max:= Flores3
+    si (Flores1 = max)
+      Informar(1)
+    si (Flores2 = max)
+      Informar(2)
+    si (Flores3 = max)
+      Informar(3)
+    si (Flores4 = max)
+      Informar(4)
+  fin
+  
+  
+variables
+  r1: limpiador
+  r2: limpiador
+  r3: limpiador
+  r4: limpiador
+  jefe: jefe
+comenzar
+  AsignarArea(r1, AreaLimpiador1)
+  AsignarArea(r2, AreaLimpiador2)
+  AsignarArea(r3, AreaLimpiador3)
+  AsignarArea(r4, AreaLimpiador4)
+  AsignarArea(jefe, AreaJefe)
+  AsignarArea(r1, AreaComun)
+  AsignarArea(r2, AreaComun)
+  AsignarArea(r3, AreaComun)
+  AsignarArea(r4, AreaComun)
+  Iniciar(jefe, 1,1)
+  Iniciar(r1, 2,1)
+  Iniciar(r2, 3,1)
+  Iniciar(r3, 4,1)
+  Iniciar(r4, 5,1)
+fin

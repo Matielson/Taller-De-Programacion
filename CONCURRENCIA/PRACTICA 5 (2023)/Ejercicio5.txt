@@ -1,0 +1,117 @@
+programa ejercicio5
+procesos
+  proceso depositarPapeles (E cantPapeles: numero)
+  variables
+    avInicial, caInicial: numero
+  comenzar
+    avInicial:= PosAv
+    caInicial:= PosCa
+    
+  fin
+  
+  
+areas
+  areaRobotCliente1: AreaC (10,1,10,1)
+  areaRobotCliente2: AreaC (11,1,11,1)
+  areaRobotCliente3: AreaC (12,1,12,1)
+  
+  areaRobotServidor: AreaC (13,1,13,1)
+  
+  areaDeposito: AreaC (100,1,100,1)
+  
+  
+robots
+  robot servidor
+  variables
+    cantRobotsTerminados: numero
+    termino: boolean
+    cantPapeles: numero
+    ID: numero
+    avInicial, caInicial: numero
+  comenzar
+    cantRobotsTerminados:= 0
+    avInicial:= PosAv
+    caInicial:= PosCa
+    EnviarMensaje(1, robotCliente1)
+    EnviarMensaje(2, robotCliente2)
+    EnviarMensaje(3, robotCliente3)
+    mientras (cantRobotsTerminados < 3)
+      Random(cantPapeles, 1,5)
+      RecibirMensaje(ID, *)
+      si (ID = 1)
+        RecibirMensaje(termino, robotCliente1)
+      sino
+        si (ID = 2)
+          RecibirMensaje(termino, robotCliente2)
+        sino
+          RecibirMensaje(termino, robotCliente3)
+
+      si (termino = F)
+        cantRobotsTerminados:= cantRobotsTerminados + 1
+        
+      sino
+        BloquearEsquina(100,1)
+        Pos(100,1)
+        repetir cantPapeles
+          depositarPapel
+        Pos(avInicial, caInicial)
+        LiberarEsquina(100,1)
+      
+        si (ID = 1)
+          EnviarMensaje(cantPapeles, robotCliente1)
+        sino
+          si (ID = 2)
+            EnviarMensaje(cantPapeles, robotCliente2)
+          sino
+            EnviarMensaje(cantPapeles, robotCliente3)
+  fin
+  
+  robot cliente
+  variables
+    avInicial, caInicial: numero
+    cantPapelesDepositados: numero
+    quienSoy: numero
+  comenzar
+    avInicial:= PosAv
+    caInicial:= PosCa
+    RecibirMensaje(quienSoy, robotServidor)
+    repetir 4
+      EnviarMensaje(quienSoy, robotServidor)
+      EnviarMensaje(V, robotServidor)
+      RecibirMensaje(cantPapelesDepositados, robotServidor)
+      BloquearEsquina(100,1)
+      Pos(100,1)
+      repetir cantPapelesDepositados
+        tomarPapel
+      Pos(avInicial, caInicial)
+      LiberarEsquina(100,1)
+      mientras (HayPapelEnLaBolsa)
+        depositarPapel
+    
+    EnviarMensaje(quienSoy, robotServidor)
+    EnviarMensaje(F, robotServidor)
+  fin
+  
+  
+variables
+  robotServidor: servidor
+  robotCliente1: cliente
+  robotCliente2: cliente
+  robotCliente3: cliente
+comenzar
+  AsignarArea(robotCliente1, areaRobotCliente1)
+  AsignarArea(robotCliente2, areaRobotCliente2)
+  AsignarArea(robotCliente3, areaRobotCliente3)
+  
+  AsignarArea(robotServidor, areaRobotServidor)
+  
+  AsignarArea(robotCliente1, areaDeposito)
+  AsignarArea(robotCliente2, areaDeposito)
+  AsignarArea(robotCliente3, areaDeposito)
+  AsignarArea(robotServidor, areaDeposito)
+  
+  Iniciar(robotCliente1, 10,1)
+  Iniciar(robotCliente2, 11,1)
+  Iniciar(robotCliente3, 12,1)
+  Iniciar(robotServidor, 13,1)
+fin

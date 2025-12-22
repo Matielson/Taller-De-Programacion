@@ -1,0 +1,118 @@
+programa ejercicio4
+procesos
+  proceso depositarTodasLasFlores
+  comenzar
+    mientras (HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+  
+  proceso juntarTodasLasFlores(ES cantFloresJuntadas: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantFloresJuntadas:= cantFloresJuntadas + 1
+  fin
+  
+  
+areas
+  areaCuadrante: AreaPC (40,40,60,60)
+  areaInicio1: AreaP (1,1,1,1)
+  areaInicio2: AreaP (2,1,2,1)
+  areaInicio3: AreaP (3,1,3,1)
+  areaInicioFisc: AreaP (4,1,4,1)
+  areaDeposito: AreaC (10,10,10,10)
+  
+robots
+  robot florero
+  variables
+    ID: numero
+    arrancar: boolean
+    cantTotalFlores, cantFloresJuntadas: numero
+    av, ca, avInicial, caInicial: numero
+  comenzar
+    avInicial:= PosAv
+    caInicial:= PosCa
+    RecibirMensaje(ID, robotFiscalizador)
+    RecibirMensaje(arrancar, robotFiscalizador)
+    
+    mientras (arrancar = V)
+      RecibirMensaje(av, robotFiscalizador)
+      RecibirMensaje(ca, robotFiscalizador)
+      BloquearEsquina(av, ca)
+      Pos(av, ca)
+      juntarTodasLasFlores(cantFloresJuntadas)
+      cantTotalFlores:= cantTotalFlores + cantFloresJuntadas
+      Pos(avInicial, caInicial)
+      LiberarEsquina(av,ca)
+      RecibirMensaje(arrancar, robotFiscalizador)
+    
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    depositarTodasLasFlores
+    Pos(avInicial, caInicial)
+    LiberarEsquina(10,10)
+    EnviarMensaje(cantTotalFlores, robotFiscalizador)
+  fin
+  
+  robot fiscalizador
+  variables
+    av, ca: numero
+    ID: numero
+    cantFlores, cantTotalFlores: numero
+  comenzar
+    EnviarMensaje(1, robotFlorero1)
+    EnviarMensaje(2, robotFlorero2)
+    EnviarMensaje(3, robotFlorero3)
+    repetir 8
+      Random(av, 40,60)
+      Random(ca, 40,60)
+      Random(ID, 1,3)
+      si (ID = 1)
+        EnviarMensaje(V, robotFlorero1)
+        EnviarMensaje(av, robotFlorero1)
+        EnviarMensaje(ca, robotFlorero1)
+      sino
+        si (ID = 2)
+          EnviarMensaje(V, robotFlorero2)
+          EnviarMensaje(av, robotFlorero2)
+          EnviarMensaje(ca, robotFlorero2)
+        sino
+          EnviarMensaje(V, robotFlorero3)
+          EnviarMensaje(av, robotFlorero3)
+          EnviarMensaje(ca, robotFlorero3)
+        
+    EnviarMensaje(F, robotFlorero1)
+    EnviarMensaje(F, robotFlorero2)
+    EnviarMensaje(F, robotFlorero3)
+    repetir 3
+      RecibirMensaje(cantFlores, *)
+      cantTotalFlores:= cantTotalFlores + cantFlores
+    Informar(cantTotalFlores)
+  fin
+  
+  
+variables
+  robotFlorero1: florero
+  robotFlorero2: florero
+  robotFlorero3: florero
+  robotFiscalizador: fiscalizador
+comenzar
+  AsignarArea(robotFlorero1, areaInicio1)
+  AsignarArea(robotFlorero2, areaInicio2)
+  AsignarArea(robotFlorero3, areaInicio3)
+  AsignarArea(robotFiscalizador, areaInicioFisc)
+  
+  AsignarArea(robotFlorero1, areaCuadrante)
+  AsignarArea(robotFlorero2, areaCuadrante)
+  AsignarArea(robotFlorero3, areaCuadrante)
+  
+  AsignarArea(robotFlorero1, areaDeposito)
+  AsignarArea(robotFlorero2, areaDeposito)
+  AsignarArea(robotFlorero3, areaDeposito)
+  AsignarArea(robotFiscalizador, areaDeposito)
+  
+  Iniciar(robotFlorero1, 1,1)
+  Iniciar(robotFlorero2, 2,1)
+  Iniciar(robotFlorero3, 3,1)
+  Iniciar(robotFiscalizador, 4,1)
+fin

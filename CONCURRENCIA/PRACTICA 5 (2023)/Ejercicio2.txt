@@ -1,0 +1,80 @@
+programa ejercicio2
+
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+robots
+  robot recolector
+  variables
+    cantEsq: numero
+    seguir: boolean
+    avInicial, caInicial: numero
+  comenzar
+    cantEsq:= 1
+    derecha
+    { BUCLE PARA RECORRER TODA LA CALLE HACIENDO LAS ETAPAS }
+    mientras (PosAv < 100)
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+      mover
+      cantEsq:= cantEsq + 1
+      
+      si (PosAv = 100)
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+      
+      { Si cumpli una etapa, hago lo que tengo que hacer y aviso que termine una etapa y espero que los otros robots me manden que terminaron para seguir }
+      si (cantEsq = 10)
+        cantEsq:= 1
+        avInicial:= PosAv
+        caInicial:= PosCa
+
+        BloquearEsquina(50,50)
+        Pos(50,50)
+        mientras (HayFlorEnLaBolsa)
+          depositarFlor
+        Pos(avInicial, caInicial)
+        LiberarEsquina(50,50)
+
+        EnviarMensaje(V, recolector1)
+        EnviarMensaje(V, recolector2)
+        EnviarMensaje(V, recolector3)
+        
+        RecibirMensaje(seguir, *)
+        RecibirMensaje(seguir, *)
+        RecibirMensaje(seguir, *)
+
+    EnviarMensaje(V, fisc)
+  fin
+  
+  robot fiscalizador
+  variables
+    arrancar: boolean
+    cantFlores: numero
+  comenzar
+    RecibirMensaje(arrancar, *)
+    RecibirMensaje(arrancar, *)
+    RecibirMensaje(arrancar, *)
+    Pos(50,50)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+    Informar(cantFlores)
+  fin
+  
+  
+variables
+  recolector1: recolector
+  recolector2: recolector
+  recolector3: recolector
+  fisc: fiscalizador
+comenzar
+  AsignarArea(recolector1, ciudad)
+  AsignarArea(recolector2, ciudad)
+  AsignarArea(recolector3, ciudad)
+  AsignarArea(fisc, ciudad)
+  Iniciar(recolector1, 1,1)
+  Iniciar(recolector2, 1,2)
+  Iniciar(recolector3, 1,3)
+  Iniciar(fisc, 1,4)
+fin

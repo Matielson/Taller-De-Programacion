@@ -1,0 +1,54 @@
+# EJERCICIO 3.a
+
+programa ejercicio3.a
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+robots
+  robot limpiador
+  variables
+    ID: numero
+    pasos: numero
+    termine: boolean
+  comenzar
+    pasos:= 0
+    RecibirMensaje(ID, coordi)
+    mientras (PosCa <> 100)
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+      mover
+      pasos:= pasos + 1
+      si (pasos = 5)
+        pasos:= 0
+        EnviarMensaje(V, r1)
+        EnviarMensaje(V, r2)
+        EnviarMensaje(V, r3)
+        RecibirMensaje(termine, *)
+        RecibirMensaje(termine, *)
+        RecibirMensaje(termine, *)
+  fin
+  
+  robot coordinador
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+  
+  
+variables
+  r1: limpiador
+  r2: limpiador
+  r3: limpiador
+  coordi: coordinador
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  AsignarArea(coordi, ciudad)
+  Iniciar(r1, 1,1)
+  Iniciar(r2, 2,1)
+  Iniciar(r3, 3,1)
+  Iniciar(coordi, 5,1)
+fin

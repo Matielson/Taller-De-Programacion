@@ -1,0 +1,74 @@
+programa ejercicio2
+procesos
+  proceso hacerEscalera (E alto: numero; ES cantMax: numero)
+  variables
+    cantPapeles: numero
+    cantFlores: numero
+  comenzar 
+    repetir 4
+      cantPapeles:= 0
+      cantFlores:= 0
+      repetir alto
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+          cantFlores:= cantFlores + 1
+        mientras (HayPapelEnLaEsquina)
+          tomarPapel
+          cantPapeles:= cantPapeles + 1
+        mover
+      derecha
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlores:= cantFlores + 1
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+        cantPapeles:= cantPapeles + 1
+      mover
+      si (cantFlores > cantPapeles)
+        cantMax:= cantMax + 1
+      repetir 3
+        derecha
+  fin
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+robots
+
+  robot juntador
+  variables
+    alto: numero
+    cantEsq: numero
+  comenzar
+    Random(alto, 1, 5)
+    hacerEscalera(alto,cantEsq)
+    EnviarMensaje(cantEsq, robotJefe)
+  fin
+  
+  robot jefe
+  variables
+    cantEsquinas1: numero
+    cantEsquinas2: numero
+    cantEsquinas3: numero
+  comenzar
+    RecibirMensaje(cantEsquinas1, r1)
+    RecibirMensaje(cantEsquinas2, r2)
+    RecibirMensaje(cantEsquinas3, r3)
+    Informar(cantEsquinas1 + cantEsquinas2 + cantEsquinas3)
+  fin
+  
+variables
+  r1: juntador
+  r2: juntador
+  r3: juntador
+  robotJefe: jefe
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  AsignarArea(robotJefe, ciudad)
+  Iniciar(r1, 2,1)
+  Iniciar(r2, 7,1)
+  Iniciar(r3, 12,1)
+  Iniciar(robotJefe, 1,1)
+fin

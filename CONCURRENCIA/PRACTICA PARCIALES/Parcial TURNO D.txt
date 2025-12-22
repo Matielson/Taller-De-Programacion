@@ -1,0 +1,208 @@
+{
+Existen tres robots sembradores: dos papeleros RP1 y RP2 que depositan un papel en las esquinas sin papel de sus respectivas calles y un robot florero RF que deposita una flor en cada esquina sin flor de una avenida aleatoria entre 2 y 35, indicada por un robot fiscalizador.
+
+Cuando los tres sembradores terminan su tarea, el fiscalizador debe indicar al sembrador que terminó primero que vuelva a su esquina inicial, e informar la cantidad de elementos (flor o papel) que depositó dicho sembrador.
+
+Las esquinas de inicio son:
+
+- RP1 en (1,8)
+- RP2 en (15,1)
+- RF en (1,2)
+- El fiscalizador en (1,1)
+
+Configure el entorno para que los sembradores cuenten con flores suficientes en su bolsa.
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+programa ParcialTurnoD
+procesos
+  
+  proceso completarEsquinaPapeles(ES cantPapeles: numero)
+  comenzar
+    si (~HayPapelEnLaEsquina)
+      depositarPapel
+      cantPapeles:= cantPapeles + 1
+  fin
+  
+  proceso completarEsquinaFlores(ES cantFlores: numero)
+  comenzar
+    si (~HayFlorEnLaEsquina)
+      depositarFlor
+      cantFlores:= cantFlores + 1
+  fin
+  
+  proceso completarAvenida(ES cantFlores: numero)
+  comenzar
+    { PRIMERA ETAPA (DESDE LA 1 HASTA LA 6 (CALLE CONFLICTIVA)) }
+    repetir 6
+      completarEsquinaFlores(cantFlores)
+      mover
+    completarEsquinaFlores(cantFlores)
+    
+    { PROCESO LA CALLE CONFLICTIVA }
+    BloquearEsquina(PosAv, 8)
+    mover
+    completarEsquinaFlores(cantFlores)
+    mover
+    LiberarEsquina(PosAv, 8)
+    
+    { SEGUNDA ETAPA (DESDE LA 9 HASTA LA 15 (CALLE CONFLICTIVA) }
+    repetir 5
+      completarEsquinaFlores(cantFlores)
+      mover
+    completarEsquinaFlores(cantFlores)
+    
+    { PROCESO LA CALLE CONFLICTIVA }
+    BloquearEsquina(PosAv, 15)
+    mover
+    completarEsquinaFlores(cantFlores)
+    mover
+    LiberarEsquina(PosAv, 15)
+    
+    { TERCERA ETAPA (DESDE LA 15 HASTA LA 100) }
+    mientras (PosCa < 100)
+      completarEsquinaFlores(cantFlores)
+      mover
+    completarEsquinaFlores(cantFlores)
+  fin
+  
+  proceso completarCalle(E avConflictiva: numero; ES cantPapeles: numero)
+  comenzar
+    { PRIMERA ETAPA (DESDE LA 1 HASTA LA AV CONFLICTIVA) }
+    repetir (avConflictiva - 2)
+      completarEsquinaPapeles(cantPapeles)
+      mover
+    completarEsquinaPapeles(cantPapeles)
+    
+    { PROCESO LA AV CONFLICTIVA }
+    BloquearEsquina(avConflictiva, PosCa)
+    mover
+    completarEsquinaPapeles(cantPapeles)
+    mover
+    LiberarEsquina(avConflictiva, PosCa)
+    
+    { SEGUNDA ETAPA (DESDE LA AV CONFLICTIVA HASTA LA 100 ) }
+    mientras (PosAv < 100)
+      completarEsquinaPapeles(cantPapeles)
+      mover
+    completarEsquinaPapeles(cantPapeles)
+  fin
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+  
+robots
+  robot florero
+  variables
+    av: numero
+    cantFlores: numero
+    soyElPrimero, seguir: boolean
+    ID: numero
+    avInicial, caInicial: numero
+  comenzar
+    avInicial:= PosAv
+    caInicial:= PosCa
+    cantFlores:= 0
+    RecibirMensaje(av, Rfisc)
+    Pos(av, 1)
+    RecibirMensaje(ID, Rfisc)
+    completarAvenida(cantFlores)
+    
+    EnviarMensaje(ID, Rfisc)
+    EnviarMensaje(cantFlores, Rfisc)
+    RecibirMensaje(seguir, Rfisc)
+    si (seguir = V)
+      Pos(avInicial, caInicial)
+  fin
+  
+  robot papelero
+  variables
+    ID: numero
+    cantPapeles: numero
+    av, avInicial, caInicial: numero
+    seguir: boolean
+  comenzar
+    cantPapeles:= 0
+    avInicial:= PosAv
+    caInicial:= PosCa
+    derecha
+    RecibirMensaje(av, Rfisc)
+    RecibirMensaje(ID, Rfisc)
+    completarCalle(av, cantPapeles)
+    
+    EnviarMensaje(ID, Rfisc)
+    EnviarMensaje(cantPapeles, Rfisc)
+    RecibirMensaje(seguir, Rfisc)
+    si (seguir = V)
+      Pos(avInicial, caInicial)
+  fin
+  
+  robot fiscalizador
+  variables
+    av: numero
+    cantFlores: numero
+    cantPapeles: numero
+    robotsTerminados: numero
+    primerID, primerCant: numero
+    ID: numero
+  comenzar
+    Random(av, 2,35)
+    EnviarMensaje(av, RF)
+    EnviarMensaje(av, RP1)
+    EnviarMensaje(av, RP2)
+    EnviarMensaje(1, RP1)
+    EnviarMensaje(2, RP2)
+    EnviarMensaje(3, RF)
+    
+    RecibirMensaje(ID, *)
+    si (ID = 1)
+      RecibirMensaje(cantPapeles, RP1)
+    sino
+      si (ID = 2)
+        RecibirMensaje(cantPapeles, RP2)
+      sino
+        RecibirMensaje(cantFlores, RF)
+    
+    primerID:= ID
+    primerCant:= cantFlores
+    
+    repetir 2
+      RecibirMensaje(ID, *)
+      si (ID = 1)
+        RecibirMensaje(cantPapeles, RP1)
+        EnviarMensaje(F, RP1)
+      sino
+        si (ID = 2)
+          RecibirMensaje(cantPapeles, RP2)
+          EnviarMensaje(F, RP2)
+        sino
+          RecibirMensaje(cantFlores, RF)
+          EnviarMensaje(F, RF)
+    
+    si (primerID = 1)
+      EnviarMensaje(V, RP1)
+    sino
+      si (primerID = 2)
+        EnviarMensaje(V, RP2)
+      sino
+        EnviarMensaje(V, RF)
+    Informar(primerCant)
+  fin
+  
+variables
+  RP1: papelero
+  RP2: papelero
+  RF: florero
+  Rfisc: fiscalizador
+comenzar
+  AsignarArea(RP1, ciudad)
+  AsignarArea(RP2, ciudad)
+  AsignarArea(RF, ciudad)
+  AsignarArea(Rfisc, ciudad)
+  Iniciar(RP1, 1,8)
+  Iniciar(RP2, 1,15)
+  Iniciar(RF, 1,2)
+  Iniciar(Rfisc, 1,1)
+fin

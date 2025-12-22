@@ -1,0 +1,74 @@
+programa ejercicio5
+procesos
+  proceso recorrerCalles(E cantEsquinas: numero; E calle1: numero; E calle2: numero; E desde: numero)
+  comenzar
+    Pos(desde, calle1)
+    derecha
+    repetir cantEsquinas
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+      mover
+    Pos(desde, calle2)
+    repetir cantEsquinas
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+      mover
+  fin
+  
+  proceso recorrerAvenidas(E cantEsquinas: numero; E av1: numero; E av2: numero; E desde: numero)
+  comenzar
+    Pos(av1, desde)
+    repetir cantEsquinas
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+      mover
+    Pos(av2, desde)
+    repetir cantEsquinas
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+      mover
+  fin
+
+  
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+  
+robots
+  robot robot1
+  comenzar
+    recorrerCalles(15,75,80,1)
+  fin
+
+  robot robot2
+  comenzar
+    recorrerAvenidas(20,75,80,80)
+  fin
+  
+  robot robot3
+  comenzar
+    recorrerCalles(30,10,15,70)
+  fin
+  
+  robot robot4
+  comenzar
+    recorrerAvenidas(10,10,15,1)
+  fin
+  
+  
+variables
+  r1: robot1
+  r2: robot2
+  r3: robot3
+  r4: robot4
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  AsignarArea(r4, ciudad)
+  Iniciar(r1, 1,75)
+  Iniciar(r2, 75,80)
+  Iniciar(r3, 70,15)
+  Iniciar(r4, 10,1)
+fin

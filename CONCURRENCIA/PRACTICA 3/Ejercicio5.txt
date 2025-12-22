@@ -1,0 +1,103 @@
+programa ejercicio5
+procesos
+  proceso hacerPaso(E avInicial: numero; E caInicial: numero; ES termino: boolean)
+  comenzar
+    BloquearEsquina(11,11)
+    Pos(11,11)
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+    si (~HayFlorEnLaEsquina)
+      termino:= V
+    Pos(avInicial, caInicial)
+    LiberarEsquina(11,11)
+    si (HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+  
+  
+areas
+  AreaCorredor1: AreaP (4,1,4,100)
+  AreaCorredor2: AreaP (6,1,6,100)
+  AreaCorredor3: AreaP (8,1,8,100)
+  AreaCorredor4: AreaP (10,1,10,100)
+  AreaFuente: AreaPC (11,11,11,11)
+  AreaCoordinador: AreaP (12,1,12,1)
+  
+robots
+  robot corredor
+  variables
+    termino: boolean
+    cantTotalPasos: numero
+    quienSoy: numero
+    avInicial: numero
+    caInicial: numero
+    avActual: numero
+    caActual: numero
+  comenzar
+    termino:= F
+    cantTotalPasos:= 0
+    RecibirMensaje(quienSoy, coordi)
+    avInicial:= PosAv
+    caInicial:= PosCa
+    mientras ((termino = F) & (cantTotalPasos < 99))
+      avActual:= PosAv
+      caActual:= PosCa
+      hacerPaso(avInicial, caInicial, termino)
+      Pos(avActual, caActual)
+      mover
+      cantTotalPasos:= cantTotalPasos + 1
+    EnviarMensaje(cantTotalPasos, coordi)
+  fin
+  
+  robot coordinador
+  variables
+    cantTotalPasos: numero
+    max: numero
+    maxRobot: numero
+  comenzar
+    max:= -1
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, r3)
+    EnviarMensaje(4, r4)
+    repetir 4
+      RecibirMensaje(ID, *)
+      si (ID = 1)
+        RecibirMensaje(cantTotalPasos, r1)
+        sino
+          si (ID = 2)
+            RecibirMensaje(cantTotalPasos, r2)
+            sino
+              si (ID = 3)
+                RecibirMensaje(cantTotalPasos, r3)
+                sino
+                  si (ID = 4)
+                    RecibirMensaje(cantTotalPasos, r4)
+      si (cantTotalPasos > max)
+        max:= cantTotalPasos
+        maxRobot:= ID
+  fin
+  
+  
+variables
+  r1: corredor
+  r2: corredor
+  r3: corredor
+  r4: corredor
+  coordi: coordinador
+comenzar
+  AsignarArea(r1, AreaCorredor1)
+  AsignarArea(r2, AreaCorredor2)
+  AsignarArea(r3, AreaCorredor3)
+  AsignarArea(r4, AreaCorredor4)
+  AsignarArea(r1, AreaFuente)
+  AsignarArea(r2, AreaFuente)
+  AsignarArea(r3, AreaFuente)
+  AsignarArea(r4, AreaFuente)
+  AsignarArea(coordi, AreaCoordinador)
+  Iniciar(r1, 4,1)
+  Iniciar(r2, 6,1)
+  Iniciar(r3, 8,1)
+  Iniciar(r4, 10,1)
+  Iniciar(coordi, 12,1)
+fin

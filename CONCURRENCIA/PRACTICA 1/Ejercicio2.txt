@@ -1,0 +1,83 @@
+programa ejercicio2
+
+procesos
+  proceso recorrerLado (E aux: numero; ES cantPapeles: numero)
+  comenzar
+    aux:= 0
+    mientras (aux < 20)
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+        cantPapeles:= cantPapeles + 1
+      mover
+      aux:= aux + 1
+  fin
+  
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+
+
+robots
+
+  robot robot1
+  variables
+    aux: numero
+    cantPapeles: numero
+  comenzar
+    cantPapeles:= 0
+    recorrerLado(aux, cantPapeles)
+    Informar(cantPapeles)
+  fin
+  
+  robot robot2
+  variables
+    aux: numero
+    cantPapeles: numero
+  comenzar
+    derecha
+    cantPapeles:= 0
+    recorrerLado(aux, cantPapeles)
+    Informar(cantPapeles)
+  fin
+  
+  robot robot3
+  variables
+    aux: numero
+    cantPapeles: numero
+  comenzar
+    cantPapeles:= 0
+    repetir 2
+      derecha
+    recorrerLado(aux, cantPapeles)
+    Informar(cantPapeles)
+  fin
+  
+  robot robot4
+  variables
+    aux: numero
+    cantPapeles: numero
+  comenzar
+    cantPapeles:= 0
+    repetir 3
+      derecha
+    recorrerLado(aux, cantPapeles)
+    Informar(cantPapeles)
+  fin
+
+
+
+variables
+  r1: robot1
+  r2: robot2
+  r3: robot3
+  r4: robot4
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  AsignarArea(r4, ciudad)
+  Iniciar(r1, 10,10)
+  Iniciar(r2, 10,30)
+  Iniciar(r3, 30,30)
+  Iniciar(r4, 30,10)
+fin

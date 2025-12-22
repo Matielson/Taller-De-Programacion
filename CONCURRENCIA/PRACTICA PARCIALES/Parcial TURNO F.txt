@@ -1,0 +1,192 @@
+Se organizó una competencia entre el equipo A y el equipo B. Cada equipo consta de dos robots que deben realizar por etapas el perímetro de un cuadrado de (10x10) como muestra la figura, recogiendo todas las flores.
+
+Cuando el primer robot de cada equipo completa su etapa (primera parte del recorrido) debe avisarle a su compañero para que continúe con la segunda etapa. 
+Además, cuando un robot finaliza su etapa debe depositar de a una las flores juntadas en la esquina (20,20).
+
+Al finalizar la competencia, un robot fiscalizador debe informar la cantidad de flores del equipo que juntó más flores.
+
+El equipo A inicia en las esquinas (1,1) y (11,10).
+El equipo B inicia en (13,1) y (23,10).
+El fiscalizador inicia en (30,1).
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+programa ParcialTurnoF
+procesos
+  proceso hacerEtapa1 (ES cantFlores: numero)
+  comenzar
+    repetir 10
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlores:= cantFlores + 1
+      mover
+    derecha
+    repetir 10
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlores:= cantFlores + 1
+      mover
+  fin
+  
+  proceso hacerEtapa2 (ES cantFlores: numero)
+  comenzar
+    repetir 9
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlores:= cantFlores + 1
+      mover
+    derecha
+    repetir 9
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlores:= cantFlores + 1
+      mover
+  fin
+  
+areas
+  areaEquipoA: AreaPC (1,1,11,11)
+  areaEquipoB: AreaPC (13,1,23,11)
+  
+  areaFiscalizador: AreaP (30,1,30,1)
+  
+  areaDeposito: AreaPC (20,20,20,20)
+  
+  
+robots
+  robot A1
+  variables
+    cantFlores: numero
+    avInicial, caInicial: numero
+  comenzar
+    cantFlores:= 0
+    hacerEtapa1(cantFlores)
+    EnviarMensaje(cantFlores, robotA2)
+    
+    avInicial:= PosAv
+    caInicial:= PosCa
+    
+    mientras (HayFlorEnLaBolsa)
+      BloquearEsquina(20,20)
+      Pos(20,20)
+      depositarFlor
+      Pos(avInicial, caInicial)
+      LiberarEsquina(20,20)
+    
+  fin
+  
+  robot A2
+  variables
+    cantFlores: numero
+    ID: numero
+    avInicial, caInicial: numero
+  comenzar
+    RecibirMensaje(ID, robotFiscalizador)
+    RecibirMensaje(cantFlores, robotA1)
+    repetir 2
+      derecha
+    hacerEtapa2(cantFlores)
+    
+    avInicial:= PosAv
+    caInicial:= PosCa
+    
+    mientras (HayFlorEnLaBolsa)
+      BloquearEsquina(20,20)
+      Pos(20,20)
+      depositarFlor
+      Pos(avInicial, caInicial)
+      LiberarEsquina(20,20)
+    
+    EnviarMensaje(ID, robotFiscalizador)
+    EnviarMensaje(cantFlores, robotFiscalizador)
+    
+  fin
+  
+  robot B1
+  variables
+    cantFlores: numero
+    avInicial,caInicial: numero
+  comenzar
+    cantFlores:= 0
+    hacerEtapa1(cantFlores)
+    EnviarMensaje(cantFlores, robotB2)
+    
+    avInicial:= PosAv
+    caInicial:= PosCa
+    
+    mientras (HayFlorEnLaBolsa)
+      BloquearEsquina(20,20)
+      Pos(20,20)
+      depositarFlor
+      Pos(avInicial, caInicial)
+      LiberarEsquina(20,20)
+  fin
+  
+  robot B2
+  variables
+    cantFlores: numero
+    ID: numero
+    avInicial, caInicial: numero
+  comenzar
+    RecibirMensaje(ID, robotFiscalizador)
+    RecibirMensaje(cantFlores, robotB1)
+    repetir 2
+      derecha
+    hacerEtapa2(cantFlores)
+    
+    avInicial:= PosAv
+    caInicial:= PosCa
+    
+    mientras (HayFlorEnLaBolsa)
+      BloquearEsquina(20,20)
+      Pos(20,20)
+      depositarFlor
+      Pos(avInicial, caInicial)
+      LiberarEsquina(20,20)
+    
+    EnviarMensaje(ID, robotFiscalizador)
+    EnviarMensaje(cantFlores, robotFiscalizador)
+  fin
+  
+  robot fiscalizador
+  variables
+    ID: numero
+    cantFloresA, cantFloresB: numero
+  comenzar
+    EnviarMensaje(1, robotA2)
+    EnviarMensaje(2, robotB2)
+    repetir 2
+      RecibirMensaje(ID, *)
+      si (ID = 1)
+        RecibirMensaje(cantFloresA, robotA2)
+      sino
+        RecibirMensaje(cantFloresB, robotB2)
+      
+    si (cantFloresA > cantFloresB)
+      Informar (cantFloresA)
+    sino
+      Informar (cantFloresB)
+  fin
+  
+variables
+  robotA1: A1
+  robotA2: A2
+  robotB1: B1
+  robotB2: B2
+  robotFiscalizador: fiscalizador
+comenzar
+  AsignarArea(robotA1, areaEquipoA)
+  AsignarArea(robotA2, areaEquipoA)
+  AsignarArea(robotB1, areaEquipoB)
+  AsignarArea(robotB2, areaEquipoB)
+  AsignarArea(robotFiscalizador, areaFiscalizador)
+  
+  AsignarArea(robotA1, areaDeposito)
+  AsignarArea(robotA2, areaDeposito)
+  AsignarArea(robotB1, areaDeposito)
+  AsignarArea(robotB2, areaDeposito)
+  Iniciar(robotA1, 1,1)
+  Iniciar(robotA2, 11,10)
+  Iniciar(robotB1, 13,1)
+  Iniciar(robotB2, 23,10)
+  Iniciar(robotFiscalizador, 30, 1)
+fin

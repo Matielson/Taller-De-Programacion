@@ -1,0 +1,95 @@
+programa ejercicio3
+
+procesos
+  proceso recorrerYJuntarPapeles(ES cantPapeles: numero)
+  comenzar
+    repetir 9
+      mientras (HayPapelEnLaEsquina)
+        tomarPapel
+        cantPapeles:= cantPapeles + 1
+      mover
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles:= cantPapeles + 1
+  fin
+  
+  proceso recorrerYJuntarFlores(ES cantFlores: numero)
+  comenzar
+    repetir 9
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+        cantFlores:= cantFlores + 1
+      mover
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+  
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+  
+robots
+  robot A1
+  variables
+    cantPap: numero
+    aux: boolean
+  comenzar
+    derecha
+    recorrerYJuntarPapeles(cantPap)
+    EnviarMensaje(aux, r2)
+    EnviarMensaje(cantPap, r2)
+  fin
+  
+  robot A2
+  variables
+    cantPap: numero
+    avanzar: boolean
+  comenzar
+    derecha
+    RecibirMensaje(avanzar, r1)
+    RecibirMensaje(cantPap, r1)
+    recorrerYJuntarPapeles(cantPap)
+    Informar(cantPap)
+  fin
+  
+  robot B1
+  variables
+    cantFlo: numero
+    aux: boolean
+  comenzar
+    derecha
+    recorrerYJuntarFlores(cantFlo)
+    EnviarMensaje(aux, r4)
+    EnviarMensaje(cantFlo, r4)
+  fin
+  
+  robot B2
+  variables
+    cantFlo: numero
+    avanzar: boolean
+  comenzar
+    derecha
+    RecibirMensaje(avanzar, r3)
+    RecibirMensaje(cantFlo, r3)
+    recorrerYJuntarFlores(cantFlo)
+    Informar(cantFlo)
+  fin
+  
+  
+variables
+  r1: A1
+  r2: A2
+  r3: B1
+  r4: B2
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  AsignarArea(r4, ciudad)
+  Iniciar(r1, 1,1)
+  Iniciar(r2, 11,1)
+  Iniciar(r3, 1,5)
+  Iniciar(r4, 11,5)
+fin

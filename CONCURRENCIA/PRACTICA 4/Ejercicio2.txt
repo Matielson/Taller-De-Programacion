@@ -1,0 +1,107 @@
+programa ejercicio2
+procesos
+  proceso depositoEnEsquina
+  variables
+    avInicial, caInicial: numero
+  comenzar
+    avInicial:= PosAv      
+    caInicial:= PosCa
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    mientras (HayPapelEnLaBolsa)
+      depositarPapel
+    Pos(avInicial, caInicial)
+    LiberarEsquina(50,50)
+  fin
+  
+  proceso depositarTodosPapeles
+  comenzar
+    mientras (HayPapelEnLaBolsa)
+      depositarPapel
+  fin
+  
+  proceso intentarJuntar (E cant: numero; ES pudo: boolean)
+  variables
+    avInicial, caInicial: numero
+    papelesAux: numero
+  comenzar
+    papelesAux:= 0
+    avInicial:= PosAv
+    caInicial:= PosCa
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    mientras ((HayPapelEnLaEsquina) & (papelesAux < cant))
+      tomarPapel
+      papelesAux:= papelesAux + 1
+    si (papelesAux = cant)
+      Pos(avInicial, caInicial)
+      LiberarEsquina(50,50)
+      depositarTodosPapeles
+      pudo:= V
+    sino
+      depositarTodosPapeles
+      Pos(avInicial,caInicial)
+      LiberarEsquina(50,50)
+      pudo:= F
+  fin
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+  
+robots
+  robot productor
+  variables
+    cantPapelesActuales: numero
+    avInicial, caInicial: numero
+  comenzar
+    mientras (PosCa <> 100)
+      mientras ((HayPapelEnLaEsquina) & (cantPapelesActuales < 5))
+        tomarPapel
+        cantPapelesActuales:= cantPapelesActuales + 1
+        
+      si (cantPapelesActuales = 5)
+        depositoEnEsquina
+        cantPapelesActuales:= 0
+      sino
+        mover
+    
+    cantPapelesActuales:= 0    
+    mientras ((HayPapelEnLaEsquina) & (cantPapelesActuales < 5))
+      tomarPapel
+      cantPapelesActuales:= cantPapelesActuales + 1
+      
+    si (cantPapelesActuales = 5)
+      depositoEnEsquina
+  fin
+  
+  robot consumidor
+  variables
+    fallos: numero
+    cant: numero
+    pudo: boolean
+  comenzar
+    fallos:= 0
+    mientras (fallos < 8)
+      Random(cant,2,5)
+      intentarJuntar(cant, pudo)
+      si (pudo = F)
+        fallos:= fallos + 1
+  fin
+
+
+variables
+  p1: productor
+  p2: productor
+  c1: consumidor
+  c2: consumidor
+comenzar
+  AsignarArea(p1, ciudad)
+  AsignarArea(p2, ciudad)
+  AsignarArea(c1, ciudad)
+  AsignarArea(c2, ciudad)
+  Iniciar(p1, 5,1)
+  Iniciar(p2, 10,1)
+  Iniciar(c1, 11,1)
+  Iniciar(c2, 12,1)
+fin
