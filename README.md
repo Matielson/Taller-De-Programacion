@@ -1,2 +1,29 @@
-# Taller-De-Programacion
-Material y practicas de la materia Taller de Programación – Licenciatura en Sistemas (UNLP). Incluye prácticas y teoria de Programacion Imperativa, POO (Orientada a objetos) y Concurrente.
+# Taller de Programación
+
+Repositorio correspondiente a la materia **Taller de Programación**  
+📍 Licenciatura en Sistemas – Facultad de Informática – **UNLP**
+
+> -------------------------------------------------------------------------
+> ⚠️ Aviso importante
+> Este repositorio contiene soluciones realizadas por mí.  
+> No representan a la cátedra y pueden contener errores.
+> -------------------------------------------------------------------------
+
+## 📌 Descripción
+Repositorio de apoyo para la materia **Taller de Programación**.  
+Incluye material útil para practicar programación, reforzar conceptos y preparar parciales a lo largo de la cursada.
+
+## 🧠 Contenidos principales
+- Programación imperativa
+- Lenguaje **Pascal**
+- Introducción a la Programación Orientada a Objetos (POO)
+- Manejo de estructuras de datos básicas
+- Resolución de problemas mediante programación
+- Prácticas guiadas y ejercicios
+
+## 📂 Organización del repositorio
+El contenido se encuentra organizado por módulos y/o prácticas, por ejemplo:
+
+## 👤 Autor
+**Matías Núñez**  
+Estudiante de Licenciatura en Sistemas – UNLP
