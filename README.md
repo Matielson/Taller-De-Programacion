@@ -12,7 +12,7 @@ Repositorio correspondiente a la materia **Taller de Programación**
 
 
 ## 📌 Descripción
-Repositorio de apoyo para la materia **Taller de Programación**.  
+En este repositorio se encuentran ejercicios, prácticas y trabajos desarrollados a lo largo de la cursada de la materia **Taller de Programación**.  
 Incluye material útil para practicar programación, reforzar conceptos y preparar parciales a lo largo de la cursada.
 
 ## 🧠 Contenidos principales
