@@ -4,13 +4,11 @@ Repositorio correspondiente a la materia **Taller de Programación**
 📍 Licenciatura en Sistemas – Facultad de Informática – **UNLP**
 
 
-> --------------------------------------------------------------------------------------------
-> 
+---
 > ⚠️ Aclaración
 > Este material tiene fines **educativos**.  
 > Puede contener resoluciones personales y no garantiza que sean las únicas ni las óptimas.
-> 
-> --------------------------------------------------------------------------------------------
+---
 
 
 ## 📌 Descripción
