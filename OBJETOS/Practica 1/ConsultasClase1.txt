@@ -1,0 +1,7 @@
+CONSULTAS GENERALES
+
+- Gonza en el ultimo video habla de recorrer una matriz o cargar una matriz de forma secuencial usando DIV y MOD (recordamos
+que era una manera sencilla para hacerlo). Como se hace?
+
+CONSULTAS INCISOS
+
