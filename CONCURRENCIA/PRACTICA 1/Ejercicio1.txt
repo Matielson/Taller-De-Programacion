@@ -1,181 +1,38 @@
-# INCISO A
-
-programa Ejercicio1.A
+programa Ejercicio1Practica1
 
 procesos
-  proceso tomarFloresEsquina (ES numCa: numero; ES cantFlores: numero)
+  proceso recorrerAvenida(ES flores: numero; ES esq: numero)
   comenzar
-    mientras (HayFlorEnLaEsquina)
-      tomarFlor
-      cantFlores:= cantFlores + 1
-      numCa:= numCa + 1
-  fin
-  
-  proceso depositarTotalFlores (E cantFlores: numero)
-  comenzar
-    repetir cantFlores
-      depositarFlor
-  fin
-  
-  proceso recorrerAvenida(ES numAv: numero; ES numCa: numero; ES cantFlores: numero; ES cantSinFlor: numero)
-  comenzar
-    cantFlores:= 0
-    Pos(numAv, numCa)
     repetir 99
-      si (HayFlorEnLaEsquina)
-        tomarFloresEsquina(numCa, cantFlores)
-      sino
-        cantSinFlor:= cantSinFlor + 1
       mover
-    si (HayFlorEnLaEsquina)
-      tomarFloresEsquina(numCa, cantFlores)
-    sino
-      cantSinFlor:= cantSinFlor + 1
-    tomarFloresEsquina(numCa, cantFlores)
-    depositarTotalFlores(cantFlores)
+      si HayFlorEnLaEsquina
+        mientras HayFlorEnLaEsquina
+          tomarFlor
+          flores:= flores + 1
+      sino
+        esq:= esq + 1
+    repetir flores
+      depositarFlor
   fin
   
 areas
   ciudad: AreaC (1,1,100,100)
   
 robots
-
   robot robot1
   variables
-    numCa: numero
-    numAv: numero
-    cantFlores: numero
-    cantSinFlor: numero
+    flores: numero
+    esquinas: numero
   comenzar
-    numCa:= 1
-    cantFlores:= 0
-    cantSinFlor:= 0
-    
-    { AVENIDA 1 }
-    numAv:= 1
-    recorrerAvenida(numAv, numCa, cantFlores, cantSinFlor)
-    Informar(cantFlores)
-    Informar(cantSinFlor)
-    
-    { AVENIDA 3 }
-    numAv:= 3
-    cantSinFlor:= 0
-    recorrerAvenida(numAv, numCa, cantFlores, cantSinFlor)
-    Informar(cantFlores)
-    Informar(cantSinFlor)
-    
-    { AVENIDA 5 }
-    numAv:= 5
-    cantSinFlor:= 0
-    recorrerAvenida(numAv, numCa, cantFlores, cantSinFlor)
-    Informar(cantFlores)
-    Informar(cantSinFlor)
+    recorrerAvenida(flores, esquinas)
+    Informar(flores)
+    Informar(esquinas)
   fin
-  
   
 variables
   r1: robot1
-comenzar
-  AsignarArea(r1, ciudad)
-  Iniciar(r1, 1,1)
-fin
-
-
-# INCISO B
-
-programa Ejercicio1.B
-
-procesos
-  proceso tomarFloresEsquina (ES numCa: numero; ES cantFlores: numero)
-  comenzar
-    mientras (HayFlorEnLaEsquina)
-      tomarFlor
-      cantFlores:= cantFlores + 1
-      numCa:= numCa + 1
-  fin
-  
-  proceso depositarTotalFlores (E cantFlores: numero)
-  comenzar
-    repetir cantFlores
-      depositarFlor
-  fin
-  
-  proceso recorrerAvenida(ES numAv: numero; ES numCa: numero; ES cantFlores: numero; ES cantSinFlor: numero)
-  comenzar
-    cantFlores:= 0
-    Pos(numAv, numCa)
-    repetir 99
-      si (HayFlorEnLaEsquina)
-        tomarFloresEsquina(numCa, cantFlores)
-      sino
-        cantSinFlor:= cantSinFlor + 1
-      mover
-    si (HayFlorEnLaEsquina)
-      tomarFloresEsquina(numCa, cantFlores)
-    sino
-      cantSinFlor:= cantSinFlor + 1
-    tomarFloresEsquina(numCa, cantFlores)
-    depositarTotalFlores(cantFlores)
-  fin
-  
-areas
-  ciudad: AreaC (1,1,5,100)
-  
-robots
-
-  robot robot1
-  variables
-    numCa: numero
-    numAv: numero
-    cantFlores: numero
-    cantSinFlor: numero
-  comenzar
-    numCa:= 1
-    numAv:= 1
-    cantFlores:= 0
-    cantSinFlor:= 0
-    recorrerAvenida(numAv, numCa, cantFlores, cantSinFlor)
-    Informar(cantFlores)
-    Informar(cantSinFlor)
-  fin
-  
-  robot robot2
-  variables
-    numCa: numero
-    numAv: numero
-    cantFlores: numero
-    cantSinFlor: numero
-  comenzar
-    numCa:= 1
-    numAv:= 3
-    cantFlores:= 0
-    cantSinFlor:= 0
-    recorrerAvenida(numAv, numCa, cantFlores, cantSinFlor)
-    Informar(cantFlores)
-    Informar(cantSinFlor)
-  fin
-  
-  robot robot3
-  variables
-    numCa: numero
-    numAv: numero
-    cantFlores: numero
-    cantSinFlor: numero
-  comenzar
-    numCa:= 1
-    numAv:= 5
-    cantFlores:= 0
-    cantSinFlor:= 0
-    recorrerAvenida(numAv, numCa, cantFlores, cantSinFlor)
-    Informar(cantFlores)
-    Informar(cantSinFlor)
-  fin
-  
-  
-variables
-  r1: robot1
-  r2: robot2
-  r3: robot3
+  r2: robot1
+  r3: robot1
 comenzar
   AsignarArea(r1, ciudad)
   AsignarArea(r2, ciudad)
