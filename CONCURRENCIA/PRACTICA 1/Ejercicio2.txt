@@ -1,4 +1,4 @@
-programa Ejercicio1Practica1
+programa Ejercicio2Practica1
 
 procesos
   proceso limpiarEsquina(ES papeles: numero)
