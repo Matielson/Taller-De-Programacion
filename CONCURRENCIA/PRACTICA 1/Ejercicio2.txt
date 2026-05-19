@@ -1,71 +1,61 @@
-programa ejercicio2
+programa Ejercicio1Practica1
 
 procesos
-  proceso recorrerLado (E aux: numero; ES cantPapeles: numero)
+  proceso limpiarEsquina(ES papeles: numero)
   comenzar
-    aux:= 0
-    mientras (aux < 20)
-      mientras (HayPapelEnLaEsquina)
-        tomarPapel
-        cantPapeles:= cantPapeles + 1
-      mover
-      aux:= aux + 1
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles:= papeles + 1
   fin
   
+  proceso recorrerLado (ES papeles: numero)
+  comenzar
+    repetir 19
+      limpiarEsquina(papeles)
+      mover
+  fin
   
 areas
   ciudad: AreaC (1,1,100,100)
-
-
+  
 robots
-
   robot robot1
   variables
-    aux: numero
-    cantPapeles: numero
+    papeles: numero
   comenzar
-    cantPapeles:= 0
-    recorrerLado(aux, cantPapeles)
-    Informar(cantPapeles)
+    recorrerLado(papeles)
+    Informar(papeles)
   fin
   
   robot robot2
   variables
-    aux: numero
-    cantPapeles: numero
+    papeles: numero
   comenzar
     derecha
-    cantPapeles:= 0
-    recorrerLado(aux, cantPapeles)
-    Informar(cantPapeles)
+    recorrerLado(papeles)
+    Informar(papeles)
   fin
   
   robot robot3
   variables
-    aux: numero
-    cantPapeles: numero
+    papeles: numero
   comenzar
-    cantPapeles:= 0
     repetir 2
       derecha
-    recorrerLado(aux, cantPapeles)
-    Informar(cantPapeles)
+    recorrerLado(papeles)
+    Informar(papeles)
   fin
   
   robot robot4
   variables
-    aux: numero
-    cantPapeles: numero
+    papeles: numero
   comenzar
-    cantPapeles:= 0
     repetir 3
       derecha
-    recorrerLado(aux, cantPapeles)
-    Informar(cantPapeles)
+    recorrerLado(papeles)
+    Informar(papeles)
   fin
-
-
-
+  
 variables
   r1: robot1
   r2: robot2
