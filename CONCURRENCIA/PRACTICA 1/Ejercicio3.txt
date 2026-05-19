@@ -1,96 +1,69 @@
-programa ejercicio3
+programa Ejercicio3Practica1
 procesos
-  proceso hacerEscalon(ES medidaEscalon: numero; ES cantEscalones: numero)
-  variables
-    auxFlores: numero
-    auxPapeles: numero
+  
+  proceso limpiarEsquina(ES pap: numero; ES flo: numero)
   comenzar
-    auxFlores:= 0
-    auxPapeles:= 0
-    repetir 2
-      repetir medidaEscalon
-        mientras (HayPapelEnLaEsquina)
-          tomarPapel
-          auxPapeles:= auxPapeles + 1
-        mientras (HayFlorEnLaEsquina)
-          tomarFlor
-          auxFlores:= auxFlores + 1
-        mientras (HayPapelEnLaBolsa)
-          depositarPapel
-        mientras (HayFlorEnLaBolsa)
-          depositarFlor
-        mover
-      derecha
-    mientras (HayPapelEnLaEsquina)
-      tomarPapel
-      auxPapeles:= auxPapeles + 1
-    mientras (HayFlorEnLaEsquina)
+    mientras HayFlorEnLaEsquina
       tomarFlor
-      auxFlores:= auxFlores + 1
-    mientras (HayPapelEnLaBolsa)
-      depositarPapel
-    mientras (HayFlorEnLaBolsa)
-      depositarFlor
-    repetir 2
-      derecha
-    si (auxPapeles - auxFlores = 1)
-      cantEscalones:= cantEscalones + 1
-    medidaEscalon:= medidaEscalon + 1
+      flo:= flo + 1
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      pap:= pap + 1
   fin
   
+  proceso izquierda
+  comenzar
+    repetir 2
+      derecha
+  fin
+
+  proceso hacerEscalon(E medida: numero; ES supero: boolean)
+  variables
+    pap: numero
+    flo: numero
+  comenzar
+    pap:= 0
+    flo:= 0
+    repetir 2
+      repetir medida
+        limpiarEsquina(pap, flo)
+        mover
+      derecha
+    si pap = (flo + 1)
+      supero:= V
+  fin
   
 areas
   ciudad: AreaC (1,1,100,100)
-  
-  
+
 robots
   robot robot1
   variables
-    cantEscalones: numero
-    medidaEscalon: numero
+    medida: numero
+    supero: boolean
+    cantEsc: numero
   comenzar
-    medidaEscalon:= 1
-    cantEscalones:= 0
+    medida:= 1
+    cantEsc:= 0
     repetir 4
-      hacerEscalon(medidaEscalon, cantEscalones)
-    Informar(cantEscalones)
+      supero:= F
+      hacerEscalon(medida, supero)
+      izquierda
+      si (supero = V)
+        cantEsc:= cantEsc + 1
+      medida:= medida + 1
+    Informar(cantEsc)
   fin
-  
-  robot robot2
-  variables
-    cantEscalones: numero
-    medidaEscalon: numero
-  comenzar
-    medidaEscalon:= 1
-    cantEscalones:= 0
-    repetir 4
-      hacerEscalon(medidaEscalon, cantEscalones)
-    Informar(cantEscalones)
-  fin
-  
-  robot robot3
-  variables
-    cantEscalones: numero
-    medidaEscalon: numero
-  comenzar
-    medidaEscalon:= 1
-    cantEscalones:= 0
-    repetir 4
-      hacerEscalon(medidaEscalon, cantEscalones)
-    Informar(cantEscalones)
-  fin
-  
-  
-  
+
 variables
   r1: robot1
-  r2: robot2
-  r3: robot3
+  r2: robot1
+  r3: robot1
 comenzar
   AsignarArea(r1, ciudad)
   AsignarArea(r2, ciudad)
   AsignarArea(r3, ciudad)
-  Iniciar(r1, 12,14)
+  Iniciar(r1, 22,6)
   Iniciar(r2, 17,10)
-  Iniciar(r3, 22,6)
+  Iniciar(r3, 12,14)
 fin
