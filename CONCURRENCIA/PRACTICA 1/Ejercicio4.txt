@@ -1,58 +1,82 @@
-programa ejercicio4
+programa Ejercicio4Practica1
 procesos
-  proceso limpiarArea(E desde: numero; E hasta: numero)
-  variables
-    avActual: numero
+
+ {PROCESOS AREAS IMPARES}
+  
+  proceso limpiarEsqFlores
   comenzar
-    avActual:= desde
-    repetir (hasta - desde + 1)
-      Pos(avActual, 1)
-      repetir 99
-        mientras (HayFlorEnLaEsquina)
-          tomarFlor
-        mientras (HayPapelEnLaEsquina)
-          tomarPapel
-        mover
-      mientras (HayFlorEnLaEsquina)
-        tomarFlor
-      mientras (HayPapelEnLaEsquina)
-        tomarPapel
-      avActual:= avActual + 1
+    mientras HayFlorEnLaEsquina
+      tomarFlor
   fin
   
+  proceso limpiarAvFlores
+  comenzar
+    repetir 99
+      limpiarEsqFlores
+      mover
+    limpiarEsqFlores
+  fin
   
+  proceso limpiarAreaFlores
+  comenzar
+    repetir 24
+      limpiarAvFlores
+      Pos(PosAv+1, 1)
+    limpiarAvFlores
+  fin
+  
+  {PROCESOS AREAS PARES}
+  
+  proceso limpiarEsqPapeles
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+  fin
+  
+  proceso limpiarAvPapeles
+  comenzar
+    repetir 99
+      limpiarEsqPapeles
+      mover
+    limpiarEsqPapeles
+  fin
+  
+  proceso limpiarAreaPapeles
+  comenzar
+    repetir 24
+      limpiarAvPapeles
+      Pos(PosAv+1, 1)
+    limpiarAvPapeles
+  fin
   
 areas
-  area1: AreaP (1,1,25,100)
-  area2: AreaP (26,1,50,100)
-  area3: AreaP (51,1,75,100)
-  area4: AreaP (76,1,100,100)
-  
-  
-  
+  areaImpar1: AreaP (1,1,25,100)
+  areaImpar2: AreaP (51,1,75,100)
+  areaPar1: AreaP (26,1,50,100)
+  areaPar2: AreaP (76,1,100,100)
 robots
-  robot robot1
+  robot robotImpar
   comenzar
-    limpiarArea(1, 25)
-    limpiarArea(51, 75)
+    limpiarAreaFlores
+    Pos(51, 1)
+    limpiarAreaFlores
   fin
   
-  robot robot2
+  robot robotPar
   comenzar
-    limpiarArea(26, 50)
-    limpiarArea(76, 100)
+    limpiarAreaPapeles
+    Pos(76,1)
+    limpiarAreaPapeles
   fin
-  
-  
   
 variables
-  r1: robot1
-  r2: robot2
+  rImpar: robotImpar
+  rPar: robotPar
 comenzar
-  AsignarArea(r1, area1)
-  AsignarArea(r1, area3)
-  AsignarArea(r2, area2)
-  AsignarArea(r2, area4)
-  Iniciar(r1, 1,1)
-  Iniciar(r2, 26,1)
+  AsignarArea(rImpar, areaImpar1)
+  AsignarArea(rImpar, areaImpar2)
+  AsignarArea(rPar, areaPar1)
+  AsignarArea(rPar, areaPar2)
+  Iniciar(rImpar, 1,1)
+  Iniciar(rPar, 26,1)
 fin
