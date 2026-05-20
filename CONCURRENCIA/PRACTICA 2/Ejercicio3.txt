@@ -1,95 +1,109 @@
-programa ejercicio3
+programa ejemplo
 
 procesos
-  proceso recorrerYJuntarPapeles(ES cantPapeles: numero)
+
+  proceso limpiarPapeles(ES cant: numero)
   comenzar
-    repetir 9
-      mientras (HayPapelEnLaEsquina)
-        tomarPapel
-        cantPapeles:= cantPapeles + 1
-      mover
-    mientras (HayPapelEnLaEsquina)
+    mientras HayPapelEnLaEsquina
       tomarPapel
-      cantPapeles:= cantPapeles + 1
+      cant:= cant + 1
   fin
-  
-  proceso recorrerYJuntarFlores(ES cantFlores: numero)
+
+  proceso limpiar10EsquinasPapeles(E desde: numero; E hasta: numero; ES cant: numero)
   comenzar
-    repetir 9
-      mientras (HayFlorEnLaEsquina)
-        tomarFlor
-        cantFlores:= cantFlores + 1
+    repetir hasta-desde
+      limpiarPapeles(cant)
       mover
-    mientras (HayFlorEnLaEsquina)
-      tomarFlor
-      cantFlores:= cantFlores + 1
+    limpiarPapeles(cant)
   fin
   
+  proceso limpiarFlores(ES cant: numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      cant:= cant + 1
+  fin
+
+  proceso limpiar10EsquinasFlores(E desde: numero; E hasta: numero; ES cant: numero)
+  comenzar
+    repetir hasta-desde
+      limpiarFlores(cant)
+      mover
+    limpiarFlores(cant)
+  fin
   
 areas
   ciudad: AreaC (1,1,100,100)
-  
-  
+
 robots
-  robot A1
+  robot robotA1
   variables
-    cantPap: numero
-    aux: boolean
+    cant: numero
   comenzar
+    cant:= 0
     derecha
-    recorrerYJuntarPapeles(cantPap)
-    EnviarMensaje(aux, r2)
-    EnviarMensaje(cantPap, r2)
+    limpiar10EsquinasPapeles(1,10,cant)
+    EnviarMensaje(cant, rA2)
+    RecibirMensaje(cant, rA2)
+    Pos(21,PosCa)
+    limpiar10EsquinasPapeles(21,30,cant)
+    EnviarMensaje(cant, rA2)
   fin
   
-  robot A2
+  robot robotA2
   variables
-    cantPap: numero
-    avanzar: boolean
+    cant: numero
   comenzar
+    RecibirMensaje(cant, rA1)
     derecha
-    RecibirMensaje(avanzar, r1)
-    RecibirMensaje(cantPap, r1)
-    recorrerYJuntarPapeles(cantPap)
-    Informar(cantPap)
+    limpiar10EsquinasPapeles(11,20,cant)
+    EnviarMensaje(cant, rA1)
+    RecibirMensaje(cant, rA1)
+    Pos(31,PosCa)
+    limpiar10EsquinasPapeles(31, 40, cant)
+    Informar(cant)
   fin
   
-  robot B1
+  robot robotB1
   variables
-    cantFlo: numero
-    aux: boolean
+    cant: numero
   comenzar
+    cant:= 0
     derecha
-    recorrerYJuntarFlores(cantFlo)
-    EnviarMensaje(aux, r4)
-    EnviarMensaje(cantFlo, r4)
+    limpiar10EsquinasFlores(1,10,cant)
+    EnviarMensaje(cant, rB2)
+    RecibirMensaje(cant, rB2)
+    Pos(21,PosCa)
+    limpiar10EsquinasFlores(21,30,cant)
+    EnviarMensaje(cant, rB2)
   fin
   
-  robot B2
+  robot robotB2
   variables
-    cantFlo: numero
-    avanzar: boolean
+    cant: numero
   comenzar
+    RecibirMensaje(cant, rB1)
     derecha
-    RecibirMensaje(avanzar, r3)
-    RecibirMensaje(cantFlo, r3)
-    recorrerYJuntarFlores(cantFlo)
-    Informar(cantFlo)
+    limpiar10EsquinasFlores(11,20,cant)
+    EnviarMensaje(cant, rB1)
+    RecibirMensaje(cant, rB1)
+    Pos(31,PosCa)
+    limpiar10EsquinasFlores(31, 40, cant)
+    Informar(cant)
   fin
-  
-  
+
 variables
-  r1: A1
-  r2: A2
-  r3: B1
-  r4: B2
+  rA1: robotA1
+  rA2: robotA2
+  rB1: robotB1
+  rB2: robotB2
 comenzar
-  AsignarArea(r1, ciudad)
-  AsignarArea(r2, ciudad)
-  AsignarArea(r3, ciudad)
-  AsignarArea(r4, ciudad)
-  Iniciar(r1, 1,1)
-  Iniciar(r2, 11,1)
-  Iniciar(r3, 1,5)
-  Iniciar(r4, 11,5)
+  AsignarArea(rA1, ciudad)
+  AsignarArea(rA2, ciudad)
+  AsignarArea(rB1, ciudad)
+  AsignarArea(rB2, ciudad)
+  Iniciar(rA1, 1,1)
+  Iniciar(rA2, 11,1)
+  Iniciar(rB1, 1,5)
+  Iniciar(rB2, 11,5)
 fin
