@@ -1,4 +1,4 @@
-programa ejemplo
+programa Ejercicio4Practica2
 
 procesos
   proceso limpiarEsq(ES objetos: numero)
