@@ -1,74 +1,91 @@
-programa ejercicio2
+programa Ejercicio2Practica4
+
 procesos
-  proceso hacerEscalera (E alto: numero; ES cantMax: numero)
-  variables
-    cantPapeles: numero
-    cantFlores: numero
-  comenzar 
-    repetir 4
-      cantPapeles:= 0
-      cantFlores:= 0
-      repetir alto
-        mientras (HayFlorEnLaEsquina)
-          tomarFlor
-          cantFlores:= cantFlores + 1
-        mientras (HayPapelEnLaEsquina)
-          tomarPapel
-          cantPapeles:= cantPapeles + 1
-        mover
-      derecha
-      mientras (HayFlorEnLaEsquina)
-        tomarFlor
-        cantFlores:= cantFlores + 1
-      mientras (HayPapelEnLaEsquina)
-        tomarPapel
-        cantPapeles:= cantPapeles + 1
+
+  proceso limpiarEsq(ES pap: numero; ES flo: numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      pap:= pap + 1
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flo:= flo + 1
+  fin
+
+  proceso hacerEscalon(E alto: numero; ES pap: numero; ES flo: numero)
+  comenzar
+    repetir alto
+      limpiarEsq(pap,flo)
       mover
-      si (cantFlores > cantPapeles)
-        cantMax:= cantMax + 1
-      repetir 3
-        derecha
+    derecha
+    limpiarEsq(pap,flo)
+    mover
   fin
   
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  
+  proceso verificarEscalon (E pap: numero; E flo: numero; ES cant: numero)
+  comenzar
+    si (flo > pap)
+      cant:= cant + 1
+  fin
+
 areas
   ciudad: AreaC (1,1,100,100)
-  
-robots
 
-  robot juntador
+robots
+  robot robotJuntador
   variables
+    pap, flo: numero
     alto: numero
-    cantEsq: numero
+    cant: numero
   comenzar
-    Random(alto, 1, 5)
-    hacerEscalera(alto,cantEsq)
-    EnviarMensaje(cantEsq, robotJefe)
+    cant:= 0
+    repetir 3
+      pap:= 0
+      flo:= 0
+      Random(alto, 1,5)
+      hacerEscalon(alto, pap, flo)
+      izquierda
+      verificarEscalon(pap, flo, cant)
+      
+    pap:= 0
+    flo:= 0
+    Random(alto, 1,5)
+    hacerEscalon(alto,pap,flo)
+    limpiarEsq(pap,flo)
+    verificarEscalon(pap, flo, cant)
+    
+    EnviarMensaje(cant, rJefe)
   fin
   
   robot jefe
   variables
-    cantEsquinas1: numero
-    cantEsquinas2: numero
-    cantEsquinas3: numero
+    cant, total: numero
   comenzar
-    RecibirMensaje(cantEsquinas1, r1)
-    RecibirMensaje(cantEsquinas2, r2)
-    RecibirMensaje(cantEsquinas3, r3)
-    Informar(cantEsquinas1 + cantEsquinas2 + cantEsquinas3)
+    total:= 0
+    repetir 3
+      RecibirMensaje(cant, *)
+      total:= total + cant
+    Informar(total)
   fin
-  
+
 variables
-  r1: juntador
-  r2: juntador
-  r3: juntador
-  robotJefe: jefe
+  r1: robotJuntador
+  r2: robotJuntador
+  r3: robotJuntador
+  rJefe: jefe
 comenzar
   AsignarArea(r1, ciudad)
   AsignarArea(r2, ciudad)
   AsignarArea(r3, ciudad)
-  AsignarArea(robotJefe, ciudad)
+  AsignarArea(rJefe, ciudad)
   Iniciar(r1, 2,1)
   Iniciar(r2, 7,1)
   Iniciar(r3, 12,1)
-  Iniciar(robotJefe, 1,1)
+  Iniciar(rJefe, 1,1)
 fin
