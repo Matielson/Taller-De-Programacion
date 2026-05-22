@@ -22,7 +22,7 @@ Incluye material útil para practicar programación imperativa, orientada a obje
 - Lenguaje **Java**
 - Introduccion a la Programación Concurrente
 - Lenguaje **R-Info**
-- Prácticas guiadas y ejercicios de los 3 modulos.
+- Prácticas, ejercicios y parciales resueltos de los 3 modulos.
 
 ## 📂 Organización del repositorio
 El contenido se encuentra organizado por módulos y/o prácticas.
