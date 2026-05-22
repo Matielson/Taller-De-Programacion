@@ -13,15 +13,16 @@ Repositorio correspondiente a la materia **Taller de Programación**
 
 ## 📌 Descripción
 En este repositorio se encuentran ejercicios, prácticas y trabajos desarrollados a lo largo de la cursada de la materia **Taller de Programación**.  
-Incluye material útil para practicar programación, reforzar conceptos y preparar parciales a lo largo de la cursada.
+Incluye material útil para practicar programación imperativa, orientada a objetos y concurrente.
 
 ## 🧠 Contenidos principales
 - Programación imperativa
 - Lenguaje **Pascal**
 - Introducción a la Programación Orientada a Objetos (POO)
-- Manejo de estructuras de datos básicas
-- Resolución de problemas mediante programación
-- Prácticas guiadas y ejercicios
+- Lenguaje **Java**
+- Introduccion a la Programación Concurrente
+- Lenguaje **R-Info**
+- Prácticas guiadas y ejercicios de los 3 modulos.
 
 ## 📂 Organización del repositorio
 El contenido se encuentra organizado por módulos y/o prácticas.
