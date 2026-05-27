@@ -1,99 +1,121 @@
-programa ejercicio1
+programa ejercicio1Practica3
+
 procesos
-  proceso limpiarFloresEsquina
+
+  proceso limpiarFlores(ES flo: numero)
   comenzar
-    mientras (HayFlorEnLaEsquina)
+    mientras HayFlorEnLaEsquina
       tomarFlor
-  fin
-  
-  proceso limparPapelesEsquina
-  comenzar
-    mientras (HayPapelEnLaEsquina)
-      tomarPapel
+      flo:= flo + 1
   fin
 
-areas
-  AreaCompartida: AreaC (10,10,10,10)
-  AreaFloreros: AreaPC (1,1,5,10)
-  AreaPapeleros: AreaPC (6,1,10,9)
-  AreaFlorero1: AreaP (6,10,6,10)
-  AreaFlorero2: AreaP (7,10,7,10)
-  AreaPapelero1: AreaP (8,10,8,10)
-  AreaPapelero2: AreaP (9,10,9,10)
-robots
-  robot recolectorFlores
+  proceso intentoFlorero (ES flo: numero)
   variables
-    avActual: numero
-    caActual: numero
-    avenida: numero
-    calle: numero
+    av,ca,avActual, caActual: numero
   comenzar
-    repetir 5
-      avActual:= PosAv
-      caActual:= PosCa
-      Random(avenida, 1,5)
-      Random(calle, 1,10)
-      BloquearEsquina(avenida, calle)
-      Pos(avenida, calle)
-      limpiarFloresEsquina
-      Pos(avActual, caActual)
-      LiberarEsquina(avenida, calle)
-    BloquearEsquina(10,10)
-    Pos(10,10)
-    mientras (HayFlorEnLaBolsa)
-      depositarFlor
+    avActual:= PosAv
+    caActual:= PosCa
+    Random(av,1,5)
+    Random(ca,1,10)
+    BloquearEsquina(av,ca)
+    Pos(av,ca)
+    limpiarFlores(flo)
     Pos(avActual, caActual)
-    LiberarEsquina(10,10)
+    LiberarEsquina(av,ca)
   fin
   
-  robot recolectorPapeles
-  variables
-    avActual: numero
-    caActual: numero
-    avenida: numero
-    calle: numero
+  proceso limpiarPapeles(ES pap: numero)
   comenzar
-    repetir 3
-      avActual:= PosAv
-      caActual:= PosCa
-      Random(avenida, 6,10)
-      Random(calle, 1,9)
-      BloquearEsquina(avenida, calle)
-      Pos(avenida, calle)
-      limpiarFloresEsquina
-      Pos(avActual, caActual)
-      LiberarEsquina(avenida, calle)
-    BloquearEsquina(10,10)
-    Pos(10,10)
-    mientras (HayPapelEnLaBolsa)
-      depositarPapel
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      pap:= pap + 1
+  fin
+  
+  proceso intentoPapelero (ES pap: numero)
+  variables
+    av,ca,avActual, caActual: numero
+  comenzar
+    avActual:= PosAv
+    caActual:= PosCa
+    Random(av,6,10)
+    Random(ca,1,9)
+    BloquearEsquina(av,ca)
+    Pos(av,ca)
+    limpiarPapeles(pap)
     Pos(avActual, caActual)
-    LiberarEsquina(10,10)
+    LiberarEsquina(av,ca)
+  fin
+  
+areas
+  areaFloreros: AreaPC (1,1,5,10)
+  areaPapeleros: AreaPC (6,1,10,9)
+  areaInicio1: AreaP (6,10,6,10)
+  areaInicio2: AreaP (7,10,7,10)
+  areaInicio3: AreaP (8,10,8,10)
+  areaInicio4: AreaP (9,10,9,10)
+  areaDeposito: AreaC (10,10,10,10)
+  
+robots
+
+  robot robotFlorero
+  variables
+    caActual, avActual: numero
+    cantFlo: numero
+  comenzar
+    avActual:= PosAv
+    caActual:= PosCa
+    cantFlo:= 0
+    repetir 5
+      intentoFlorero(cantFlo)
+    repetir cantFlo
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(avActual, caActual)
+      LiberarEsquina(10,10)
+  fin
+  
+  robot robotPapelero
+  variables
+    caActual, avActual: numero
+    cantPap: numero
+  comenzar
+    avActual:= PosAv
+    caActual:= PosCa
+    cantPap:= 0
+    repetir 5
+      intentoPapelero(cantPap)
+    repetir cantPap
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarPapel
+      Pos(avActual, caActual)
+      LiberarEsquina(10,10)
   fin
   
 variables
-  florero1: recolectorFlores
-  florero2: recolectorFlores
-  papelero1: recolectorPapeles
-  papelero2: recolectorPapeles
+  rF1: robotFlorero
+  rF2: robotFlorero
+  rP1: robotPapelero
+  rP2: robotPapelero
 comenzar
-  AsignarArea(florero1, AreaFloreros)
-  AsignarArea(florero2, AreaFloreros)
-  AsignarArea(papelero1, AreaPapeleros)
-  AsignarArea(papelero2, AreaPapeleros)
+  AsignarArea(rF1, areaFloreros)
+  AsignarArea(rF2, areaFloreros)
+  AsignarArea(rP1, areaPapeleros)
+  AsignarArea(rP2, areaPapeleros)
   
-  AsignarArea(florero1, AreaFlorero1)
-  AsignarArea(florero2, AreaFlorero2)
-  AsignarArea(papelero1, AreaPapelero1)
-  AsignarArea(papelero2, AreaPapelero2)
+  AsignarArea(rF1, areaInicio1)
+  AsignarArea(rF2, areaInicio2)
+  AsignarArea(rP1, areaInicio3)
+  AsignarArea(rP2, areaInicio4)
   
-  AsignarArea(florero1, AreaCompartida)
-  AsignarArea(florero2, AreaCompartida)
-  AsignarArea(papelero1, AreaCompartida)
-  AsignarArea(papelero2, AreaCompartida)
+  AsignarArea(rF1, areaDeposito)
+  AsignarArea(rF2, areaDeposito)
+  AsignarArea(rP1, areaDeposito)
+  AsignarArea(rP2, areaDeposito)
   
-  Iniciar(florero1, 6,10)
-  Iniciar(florero2, 7,10)
-  Iniciar(papelero1, 8,10)
-  Iniciar(papelero2, 9,10)
+  Iniciar(rF1, 6,10)
+  Iniciar(rF2, 7,10)
+  Iniciar(rP1, 8,10)
+  Iniciar(rP2, 9,10)
 fin
