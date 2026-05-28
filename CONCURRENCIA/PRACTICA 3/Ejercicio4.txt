@@ -1,76 +1,106 @@
-programa ejercicio4.a
-  
-areas
-  ciudad: AreaC (1,1,100,100)
-  
-robots
-  robot juntador
+# INCISO A
+
+programa Ejercicio4Practica3
+
+procesos
+  proceso tomarFlorEsq10(ES vacio: boolean)
   variables
-    termino: boolean
-    avInicial: numero
-    caInicial: numero
-    quienSoy: numero
+    avOri, caOri: numero
   comenzar
-    termino:= F
-    avInicial:= PosAv
-    caInicial:= PosCa
-    RecibirMensaje(quienSoy, coordi)
-    mientras (termino = F)
-      BloquearEsquina(10,10)
-      Pos(10,10)
-      si (HayFlorEnLaEsquina)
-        tomarFlor
-      si (~HayFlorEnLaEsquina)
-        termino:= V
+    avOri:= PosAv
+    caOri:= PosCa
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    si HayFlorEnLaEsquina
+      tomarFlor
+      si ~HayFlorEnLaEsquina
+        vacio:= V
       BloquearEsquina(11,11)
       Pos(11,11)
       LiberarEsquina(10,10)
-      si (HayFlorEnLaBolsa)
-        depositarFlor
-      Pos(avInicial, caInicial)
+      depositarFlor
+      Pos(avOri, caOri)
       LiberarEsquina(11,11)
-    EnviarMensaje(termino, coordi)
-    EnviarMensaje(quienSoy, coordi)
+    sino
+      vacio:= V
+      Pos(avOri, caOri)
+      LiberarEsquina(10,10)
   fin
   
-  robot coordinador
+  proceso limpiarEsq11
+  comenzar
+    Pos(11,11)
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+  fin
+  
+areas
+  areaRobot1: AreaP (9,9,9,9)
+  areaRobot2: AreaP (9,10,9,10)
+  areaRobot3: AreaP (9,11,9,11)
+  areaRobot4: AreaP (9,12,9,12)
+  areaRobotJefe: AreaP (1,1,1,1)
+  areaRecoleccion: AreaPC (10,10,10,10)
+  areaDeposito: AreaC (11,11,11,11)
+  
+robots
+  robot recolector
   variables
-    termino: boolean
-    quienEs: numero
+    vacio: boolean
+    ID: numero
+  comenzar
+    vacio:= F
+    RecibirMensaje(ID, rJefe)
+    mientras (vacio = F)
+      tomarFlorEsq10(vacio)
+    EnviarMensaje(ID, rJefe)
+  fin
+  
+  robot jefe
+  variables
+    IDultimo: boolean
   comenzar
     EnviarMensaje(1, r1)
     EnviarMensaje(2, r2)
     EnviarMensaje(3, r3)
     EnviarMensaje(4, r4)
-    RecibirMensaje(termino, *)
-    RecibirMensaje(quienEs, *)
-    RecibirMensaje(termino, *)
-    RecibirMensaje(quienEs, *)
-    RecibirMensaje(termino, *)
-    RecibirMensaje(quienEs, *)
-    RecibirMensaje(termino, *)
-    RecibirMensaje(quienEs, *)
-    Informar(quienEs)
-    Pos(11,11)
-    mientras (HayFlorEnLaEsquina)
-      tomarFlor
+  
+    RecibirMensaje(IDultimo, *)
+    RecibirMensaje(IDultimo, *)
+    RecibirMensaje(IDultimo, *)
+    RecibirMensaje(IDultimo, *)
+    
+    Informar(IDultimo)
+    limpiarEsq11
   fin
   
 variables
-  r1: juntador
-  r2: juntador
-  r3: juntador
-  r4: juntador
-  coordi: coordinador
+  r1: recolector
+  r2: recolector
+  r3: recolector
+  r4: recolector
+  rJefe: jefe
 comenzar
-  AsignarArea(r1, ciudad)
-  AsignarArea(r2, ciudad)
-  AsignarArea(r3, ciudad)
-  AsignarArea(r4, ciudad)
-  AsignarArea(coordi, ciudad)
+  AsignarArea(r1, areaRobot1)
+  AsignarArea(r2, areaRobot2)
+  AsignarArea(r3, areaRobot3)
+  AsignarArea(r4, areaRobot4)
+  AsignarArea(rJefe, areaRobotJefe)
+  
+  AsignarArea(r1, areaRecoleccion)
+  AsignarArea(r2, areaRecoleccion)
+  AsignarArea(r3, areaRecoleccion)
+  AsignarArea(r4, areaRecoleccion)
+  
+  AsignarArea(r1, areaDeposito)
+  AsignarArea(r2, areaDeposito)
+  AsignarArea(r3, areaDeposito)
+  AsignarArea(r4, areaDeposito)
+  AsignarArea(rJefe, areaDeposito)
+  
+  Iniciar(rJefe, 1,1)
   Iniciar(r1, 9,9)
   Iniciar(r2, 9,10)
   Iniciar(r3, 9,11)
   Iniciar(r4, 9,12)
-  Iniciar(coordi, 1,1)
 fin
