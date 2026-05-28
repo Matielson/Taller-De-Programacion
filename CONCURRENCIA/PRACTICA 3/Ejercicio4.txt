@@ -104,3 +104,114 @@ comenzar
   Iniciar(r3, 9,11)
   Iniciar(r4, 9,12)
 fin
+
+
+
+
+
+
+
+# INCISO B
+
+programa Ejercicio4Practica3
+
+procesos
+  proceso tomarFlorEsq10(ES vacio: boolean)
+  variables
+    avOri, caOri: numero
+  comenzar
+    avOri:= PosAv
+    caOri:= PosCa
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    si HayFlorEnLaEsquina
+      tomarFlor
+    si ~HayFlorEnLaEsquina
+      vacio:= V
+    Pos(avOri, caOri)
+    LiberarEsquina(10,10)
+    BloquearEsquina(11,11)
+    Pos(11,11)
+    si HayFlorEnLaBolsa
+      depositarFlor
+    Pos(avOri, caOri)
+    LiberarEsquina(11,11)
+  fin
+  
+  proceso limpiarEsq11
+  comenzar
+    Pos(11,11)
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+  fin
+  
+areas
+  areaRobot1: AreaP (9,9,9,9)
+  areaRobot2: AreaP (9,10,9,10)
+  areaRobot3: AreaP (9,11,9,11)
+  areaRobot4: AreaP (9,12,9,12)
+  areaRobotJefe: AreaP (1,1,1,1)
+  areaRecoleccion: AreaPC (10,10,10,10)
+  areaDeposito: AreaC (11,11,11,11)
+  
+robots
+  robot recolector
+  variables
+    vacio: boolean
+    ID: numero
+  comenzar
+    vacio:= F
+    RecibirMensaje(ID, rJefe)
+    mientras (vacio = F)
+      tomarFlorEsq10(vacio)
+    EnviarMensaje(ID, rJefe)
+  fin
+  
+  robot jefe
+  variables
+    IDultimo: boolean
+  comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, r3)
+    EnviarMensaje(4, r4)
+  
+    RecibirMensaje(IDultimo, *)
+    RecibirMensaje(IDultimo, *)
+    RecibirMensaje(IDultimo, *)
+    RecibirMensaje(IDultimo, *)
+    
+    Informar(IDultimo)
+    limpiarEsq11
+  fin
+  
+variables
+  r1: recolector
+  r2: recolector
+  r3: recolector
+  r4: recolector
+  rJefe: jefe
+comenzar
+  AsignarArea(r1, areaRobot1)
+  AsignarArea(r2, areaRobot2)
+  AsignarArea(r3, areaRobot3)
+  AsignarArea(r4, areaRobot4)
+  AsignarArea(rJefe, areaRobotJefe)
+  
+  AsignarArea(r1, areaRecoleccion)
+  AsignarArea(r2, areaRecoleccion)
+  AsignarArea(r3, areaRecoleccion)
+  AsignarArea(r4, areaRecoleccion)
+  
+  AsignarArea(r1, areaDeposito)
+  AsignarArea(r2, areaDeposito)
+  AsignarArea(r3, areaDeposito)
+  AsignarArea(r4, areaDeposito)
+  AsignarArea(rJefe, areaDeposito)
+  
+  Iniciar(rJefe, 1,1)
+  Iniciar(r1, 9,9)
+  Iniciar(r2, 9,10)
+  Iniciar(r3, 9,11)
+  Iniciar(r4, 9,12)
+fin
