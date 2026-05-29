@@ -1,107 +1,111 @@
-programa ejercicio2
+programa Ejercicio2Practica4
+
 procesos
-  proceso depositoEnEsquina
+
+  proceso depositarPapelesEsq
   variables
-    avInicial, caInicial: numero
+    avOri, caOri: numero
   comenzar
-    avInicial:= PosAv      
-    caInicial:= PosCa
+    avOri:= PosAv
+    caOri:= PosCa
     BloquearEsquina(50,50)
     Pos(50,50)
-    mientras (HayPapelEnLaBolsa)
+    repetir 5
       depositarPapel
-    Pos(avInicial, caInicial)
+    Pos(avOri, caOri)
     LiberarEsquina(50,50)
   fin
   
-  proceso depositarTodosPapeles
+  proceso depositarTodo
   comenzar
-    mientras (HayPapelEnLaBolsa)
+    mientras HayPapelEnLaEsquina
       depositarPapel
   fin
   
-  proceso intentarJuntar (E cant: numero; ES pudo: boolean)
+  proceso intentarTomarPapeles(E cant: numero; ES pudo: boolean)
   variables
-    avInicial, caInicial: numero
-    papelesAux: numero
+    avOri, caOri: numero
+    cantAux: numero
   comenzar
-    papelesAux:= 0
-    avInicial:= PosAv
-    caInicial:= PosCa
+    avOri:= PosAv
+    caOri:= PosCa
+    cantAux:= 0
     BloquearEsquina(50,50)
     Pos(50,50)
-    mientras ((HayPapelEnLaEsquina) & (papelesAux < cant))
+    mientras ((HayPapelEnLaEsquina) & (cantAux < cant))
       tomarPapel
-      papelesAux:= papelesAux + 1
-    si (papelesAux = cant)
-      Pos(avInicial, caInicial)
+      cantAux:= cantAux + 1
+    si (cantAux = cant)
+      Pos(avOri, caOri)
       LiberarEsquina(50,50)
-      depositarTodosPapeles
+      depositarTodo
       pudo:= V
     sino
-      depositarTodosPapeles
-      Pos(avInicial,caInicial)
+      depositarTodo
+      Pos(avOri, caOri)
       LiberarEsquina(50,50)
       pudo:= F
   fin
   
 areas
-  ciudad: AreaC (1,1,100,100)
-  
+  areaProductor1: AreaP (5,1,5,100)
+  areaProductor2: AreaP (10,1,10,100)
+  areaConsumidor1: AreaP (11,1,11,1)
+  areaConsumidor2: AreaP (12,1,12,1)
+  areaDeposito: AreaC (50,50,50,50)
   
 robots
   robot productor
   variables
-    cantPapelesActuales: numero
-    avInicial, caInicial: numero
+    cantPapeles: numero
   comenzar
+    cantPapeles:= 0
     mientras (PosCa <> 100)
-      mientras ((HayPapelEnLaEsquina) & (cantPapelesActuales < 5))
+      mientras ((HayPapelEnLaEsquina) & (cantPapeles < 5))
         tomarPapel
-        cantPapelesActuales:= cantPapelesActuales + 1
-        
-      si (cantPapelesActuales = 5)
-        depositoEnEsquina
-        cantPapelesActuales:= 0
+        cantPapeles:= cantPapeles + 1
+      
+      si (cantPapeles = 5)
+        depositarPapelesEsq
+        cantPapeles:= 0
       sino
         mover
-    
-    cantPapelesActuales:= 0    
-    mientras ((HayPapelEnLaEsquina) & (cantPapelesActuales < 5))
-      tomarPapel
-      cantPapelesActuales:= cantPapelesActuales + 1
-      
-    si (cantPapelesActuales = 5)
-      depositoEnEsquina
   fin
   
   robot consumidor
   variables
-    fallos: numero
     cant: numero
+    intentos: numero
     pudo: boolean
   comenzar
-    fallos:= 0
-    mientras (fallos < 8)
-      Random(cant,2,5)
-      intentarJuntar(cant, pudo)
+    Random(cant,2,5)
+    intentos:= 0
+    mientras (intentos < 8)
+      intentarTomarPapeles(cant, pudo)
       si (pudo = F)
-        fallos:= fallos + 1
+        intentos:= intentos + 1
+      sino
+        intentos:= 0
   fin
-
-
+  
 variables
-  p1: productor
-  p2: productor
-  c1: consumidor
-  c2: consumidor
+  rProd1: productor
+  rProd2: productor
+  rCons1: consumidor
+  rCons2: consumidor
 comenzar
-  AsignarArea(p1, ciudad)
-  AsignarArea(p2, ciudad)
-  AsignarArea(c1, ciudad)
-  AsignarArea(c2, ciudad)
-  Iniciar(p1, 5,1)
-  Iniciar(p2, 10,1)
-  Iniciar(c1, 11,1)
-  Iniciar(c2, 12,1)
+  AsignarArea(rProd1, areaProductor1)
+  AsignarArea(rProd2, areaProductor2)
+  AsignarArea(rCons1, areaConsumidor1)
+  AsignarArea(rCons2, areaConsumidor2)
+  
+  AsignarArea(rProd1, areaDeposito)
+  AsignarArea(rProd2, areaDeposito)
+  AsignarArea(rCons1, areaDeposito)
+  AsignarArea(rCons2, areaDeposito)
+  
+  Iniciar(rProd1, 5,1)
+  Iniciar(rProd2, 10,1)
+  Iniciar(rCons1, 11,1)
+  Iniciar(rCons2, 12,1)
 fin
