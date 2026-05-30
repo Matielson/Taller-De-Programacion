@@ -1,4 +1,4 @@
-# EJERCICIO 3.a
+# OPCION 2025
 
 programa ejercicio3.a
   
@@ -52,3 +52,84 @@ comenzar
   Iniciar(r3, 3,1)
   Iniciar(coordi, 5,1)
 fin
+
+# OPCION 2026
+
+programa Ejercicio3Practica4
+
+procesos
+
+  proceso limpiarEsq
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+  fin
+
+  proceso hacerEtapa
+  comenzar
+    repetir 4
+      vaciarEsquina
+      mover
+    vaciarEsquina
+  fin
+  
+areas
+  ciudad: AreaC (1,1,100,100)
+  
+robots
+  robot recolector1
+  variables
+    ID: numero
+    cantEsq: numero
+    seguir: boolean
+  comenzar
+    RecibirMensaje(ID, rCoordi)
+    mientras (PosCa <> 100)
+      cantEsq:= 0
+      mientras (PosCa <> 100) & (cantEsq < 5)
+        limpiarEsq
+        cantEsq:= cantEsq + 1
+        mover
+      EnviarMensaje(V, r2)
+      EnviarMensaje(V, r3)
+      RecibirMensaje(seguir, *)
+      RecibirMensaje(seguir, *)
+  fin
+  
+  robot recolector2
+  variables
+    ID: numero
+    cantEsq: numero
+    seguir: boolean
+  comenzar
+    RecibirMensaje(ID, rCoordi)
+    mientras (PosCa <> 100)
+      cantEsq:= 0
+      mientras (PosCa <> 100) & (cantEsq < 5)
+        limpiarEsq
+        cantEsq:= cantEsq + 1
+        mover
+      EnviarMensaje(V, r1)
+      EnviarMensaje(V, r3)
+      RecibirMensaje(seguir, *)
+      RecibirMensaje(seguir, *)
+  fin
+  
+  robot recolector3
+  variables
+    ID: numero
+    cantEsq: numero
+    seguir: boolean
+  comenzar
+    RecibirMensaje(ID, rCoordi)
+    mientras (PosCa <> 100)
+      cantEsq:= 0
+      mientras (PosCa <> 100) & (cantEsq < 5)
+        limpiarEsq
+        cantEsq:= cantEsq + 1
+        mover
+      EnviarMensaje(V, r1)
+      EnviarMensaje(V, r2)
+      RecibirMensaje(seguir, *)
+      RecibirMensaje(seguir, *)
+  fin
