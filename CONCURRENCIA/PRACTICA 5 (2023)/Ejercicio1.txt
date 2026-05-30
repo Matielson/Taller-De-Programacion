@@ -1,75 +1,72 @@
-programa ejemplo
+programa Ejercicio1Practica5
 
 procesos
-  proceso juntarFloresAvenida (ES cantFlores: numero)
+  proceso limpiarEsqFlores(ES cant: numero)
   comenzar
-    mientras (PosCa < 100)
-      mientras (HayFlorEnLaEsquina)
-        tomarFlor
-        cantFlores:= cantFlores + 1
-        
-      si (((PosCa + 1) = 98) | ((PosCa + 1) = 99))
-        BloquearEsquina(PosAv, (PosCa + 1))
-        
-      mover 
-      
-      si (((PosCa - 1) = 98) | ((PosCa - 1) = 99))
-        LiberarEsquina(PosAv, (PosCa - 1))
-      
-    mientras (HayFlorEnLaEsquina)
+    mientras HayFlorEnLaEsquina
       tomarFlor
-      cantFlores:= cantFlores + 1
-  fin      
-  
-  proceso juntarPapelesCalle (ES cantPapeles: numero)
-  comenzar
-    mientras (PosAv < 100)
-      mientras (HayPapelEnLaEsquina)
-        tomarPapel
-        cantPapeles:= cantPapeles + 1
-        
-      si (((PosAv + 1) = 2) | ((PosAv + 1) = 3))
-        BloquearEsquina((PosAv + 1), PosCa)   
-        
-      mover
-      
-      si (((PosAv - 1) = 2) | ((PosAv - 1) = 3))
-        LiberarEsquina((PosAv - 1), PosCa) 
-        
-    mientras(HayPapelEnLaEsquina)
-      tomarPapel
-      cantPapeles:= cantPapeles + 1
+      cant:= cant + 1
   fin
   
+  proceso limpiarEsqPapeles(ES cant: numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      cant:= cant + 1
+  fin
+
 areas
-  areaR1: AreaP (2,1,2,100)
-  areaR2: AreaP (3,1,3,100)
-  areaA1: AreaP (1,98,100,98)
-  areaA2: AreaP (1,99,100,99)
-  areaFisc: AreaP (50,50,50,50)
-  
+  ciudad: AreaC (1,1,100,100)
+
 robots
   robot rojo
   variables
-    cantTotalFlores: numero
-    quienSoy: numero
+    ID: numero
+    cant: numero
   comenzar
-    RecibirMensaje(quienSoy, fisc)
-    juntarFloresAvenida(cantTotalFlores)
-    EnviarMensaje(quienSoy, fisc)
-    EnviarMensaje(cantTotalFlores, fisc)
+    RecibirMensaje(ID, rJefe)
+    cant:= 0
+    repetir 96
+      limpiarEsqFlores(cant)
+      mover
+    limpiarEsqFlores(cant)
+    BloquearEsquina(PosAv, PosCa+1)
+    mover
+    limpiarEsqFlores(cant)
+    BloquearEsquina(PosAv, PosCa+1)
+    mover
+    LiberarEsquina(PosAv, PosCa-1)
+    limpiarEsqFlores(cant)
+    mover
+    LiberarEsquina(PosAv, PosCa-1)
+    limpiarEsqFlores(cant)
+    EnviarMensaje(ID, rJefe)
+    EnviarMensaje(cant, rJefe)
   fin
   
   robot azul
   variables
-    cantTotalPapeles: numero
-    quienSoy: numero
+    ID: numero
+    cant: numero
   comenzar
-    RecibirMensaje(quienSoy, fisc)
+    RecibirMensaje(ID, rJefe)
+    cant:= 0
     derecha
-    juntarPapelesCalle(cantTotalPapeles)
-    EnviarMensaje(quienSoy, fisc)
-    EnviarMensaje(cantTotalPapeles, fisc)
+    limpiarEsqPapeles(cant)
+    BloquearEsquina(PosAv+1, PosCa)
+    mover
+    limpiarEsqPapeles(cant)
+    BloquearEsquina(PosAv+1, PosCa)
+    mover
+    LiberarEsquina(PosAv-1, PosCa)
+    limpiarEsqPapeles(cant)
+    mover
+    LiberarEsquina(PosAv-1, PosCa)
+    repetir 96
+      limpiarEsqPapeles(cant)
+      mover
+    EnviarMensaje(ID, rJefe)
+    EnviarMensaje(cant, rJefe)
   fin
   
   robot fiscalizador
@@ -80,25 +77,25 @@ robots
   comenzar
     totalEquipoRojo:= 0
     totalEquipoAzul:= 0
-    EnviarMensaje(1, R1)
-    EnviarMensaje(2, R2)
-    EnviarMensaje(3, A1)
-    EnviarMensaje(4, A2)
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, a1)
+    EnviarMensaje(4, a2)
     repetir 4
       RecibirMensaje(ID, *)
       si (ID = 1)
-        RecibirMensaje(cantFlores, R1)
+        RecibirMensaje(cantFlores, r1)
         totalEquipoRojo:= totalEquipoRojo + cantFlores
       sino
         si (ID = 2)
-          RecibirMensaje(cantFlores, R2)
+          RecibirMensaje(cantFlores, r2)
           totalEquipoRojo:= totalEquipoRojo + cantFlores
         sino
           si (ID = 3)
-            RecibirMensaje(cantPapeles, A1)
+            RecibirMensaje(cantPapeles, a1)
             totalEquipoAzul:= totalEquipoAzul + cantPapeles
           sino
-            RecibirMensaje(cantPapeles, A2)
+            RecibirMensaje(cantPapeles, a2)
             totalEquipoAzul:= totalEquipoAzul + cantPapeles
     
     { Asumo que: EQUIPO AZUL = 1 | EQUIPO ROJO = 2 | EMPATE = 0}
@@ -112,20 +109,20 @@ robots
   fin
   
 variables
-  R1: rojo
-  R2: rojo
-  A1: azul
-  A2: azul
-  fisc: fiscalizador
+  r1: rojo
+  r2: rojo
+  a1: azul
+  a2: azul
+  rJefe: fiscalizador
 comenzar
-  AsignarArea(R1, areaR1)
-  AsignarArea(R2, areaR2)
-  AsignarArea(A1, areaA1)
-  AsignarArea(A2, areaA2)
-  AsignarArea(fisc, areaFisc)
-  Iniciar(R1, 2,1)
-  Iniciar(R2, 3,1)
-  Iniciar(A1, 1,98)
-  Iniciar(A2, 1,99)
-  Iniciar(fisc, 50,50)
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(a1, ciudad)
+  AsignarArea(a2, ciudad)
+  AsignarArea(rJefe, ciudad)
+  Iniciar(r1, 2,1)
+  Iniciar(r2, 3,1)
+  Iniciar(a1, 1,98)
+  Iniciar(a2, 1,99)
+  Iniciar(rJefe, 50,50)
 fin
