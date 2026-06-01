@@ -1,3 +1,5 @@
+# OPCION 2025
+
 programa ejemplo
 procesos
   proceso juntarFloresYMover(ES cantFlores: numero)
@@ -113,3 +115,109 @@ comenzar
   Iniciar(robotRecolector1, 1,3)
   Iniciar(robotRecolector2, 1,4)
 fin
+
+
+
+
+
+# OPCION 2026
+
+programa Ejercicio3Practica5
+
+procesos
+  
+  proceso depositarTodoEsq10
+  variables
+    avOri, caOri: numero
+  comenzar
+    avOri:= PosAv
+    caOri:= PosCa
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    mientras HayFlorEnLaBolsa
+      depositarFlor
+    Pos(avOri, caOri)
+    LiberarEsquina(10,10)
+  fin
+  
+  proceso procesarEsq (ES cantFlo: numero)
+  comenzar
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlo:= cantFlo + 1
+  fin
+  
+areas
+  areaRecolector1: AreaP (1,3,100,3)
+  areaRecolector2: AreaP (1,4,100,4)
+  areaCosechador: AreaP (1,5,1,5)
+  areaDeposito: AreaC (10,10,10,10)
+  
+robots
+  robot recolector
+  variables
+    cantFlo, cantEsq: numero
+  comenzar
+    derecha
+    mientras (PosAv <> 100)
+      cantFlo:= 0
+      cantEsq:= 0
+      mientras (PosAv <> 100) & (cantFlo < 10) & (cantEsq < 15)
+        procesarEsq(cantFlo)
+        cantEsq:= cantEsq + 1
+        mover
+      si (PosAv <> 100)
+        si (HayFlorEnLaBolsa)
+          depositarTodoEsq10
+          EnviarMensaje(V, rCosechador)
+      sino
+        procesarEsq(cantFlo)
+        cantEsq:= cantEsq + 1
+        si (cantFlo = 10) | (cantEsq = 15) & (HayFlorEnLaBolsa)
+          depositarTodoEsq10
+          EnviarMensaje(V, rCosechador)
+    EnviarMensaje(F, rCosechador)
+  fin
+  
+  robot cosechador
+  variables
+    avOri, caOri: numero
+    cantRobotsFinalizados: numero
+    cantFlores: numero
+    seguir: boolean
+  comenzar
+    avOri:= PosAv
+    caOri:= PosCa
+    cantRobotsFinalizados:= 0
+    RecibirMensaje(seguir, *)
+    mientras (cantRobotsFinalizados = 0)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cantFlores:= cantFlores + 1
+      Pos(avOri, caOri)
+      LiberarEsquina(10,10)
+      RecibirMensaje(seguir, *)
+      si (seguir = F)
+        cantRobotsFinalizados:= cantRobotsFinalizados + 1
+    Informar(cantFlores)
+  fin
+  
+variables
+  r1: recolector
+  r2: recolector
+  rCosechador: cosechador
+comenzar
+  AsignarArea(r1, areaRecolector1)
+  AsignarArea(r2, areaRecolector2)
+  AsignarArea(rCosechador, areaCosechador)
+  
+  AsignarArea(r1, areaDeposito)
+  AsignarArea(r2, areaDeposito)
+  AsignarArea(r1, areaDeposito)
+  
+  Iniciar(r1, 1,3)
+  Iniciar(r2, 1,4)
+  Iniciar(rCosechador, 1,5)
+fin  
