@@ -1,7 +1,3 @@
-# EJERCICIO 1
+# Preguntas 2026
 
-- Preguntar si esta bien hecho el punto 1 **ANDAR ANDA, PERO NO HACE FALTA PREGUNTAR EN TODAS LAS ESQUINAS SI ES CONFLICTIVA, HAY QUE HACERLO MAS MANUAL (POR EJEMPLO, EN EL PROCESO DE LA AVENIDA PODES HACER UN REPETIR 97 Y AHI BLOQUEAR LA ESQUINA, MOVERSE, HACER, BLOQUEAR LA OTRA, MOVERSE, DESBLOQUEAR LA ANTERIOR, HACER Y DESBLOQUEAR Y AHI DSP HACER LA ULTIMA.**
-
-# EJERCICIO 2
-
-- Consultar si esta bien hecho el punto 2.
+Punto 3. Consultar que opcion es mejor (2025 o 2026), ya que en el de 2025 pregunto siempre los ifs (en cada vuelta del while). En cambio en el de 2026 no, como seria la manera correcta?
