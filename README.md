@@ -18,10 +18,13 @@ Incluye material útil para practicar programación imperativa, orientada a obje
 ## 🧠 Contenidos principales
 - Programación imperativa
 - Lenguaje **Pascal**
+
 - Introducción a la Programación Orientada a Objetos (POO)
 - Lenguaje **Java**
+
 - Introduccion a la Programación Concurrente
 - Lenguaje **R-Info**
+
 - Prácticas, ejercicios y parciales resueltos de los 3 modulos.
 
 ## 📂 Organización del repositorio
