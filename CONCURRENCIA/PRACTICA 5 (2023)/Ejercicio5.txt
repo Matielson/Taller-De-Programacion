@@ -1,117 +1,102 @@
-programa ejercicio5
+programa Ejercicio5Pracitca5
+
 procesos
-  proceso depositarPapeles (E cantPapeles: numero)
+  proceso recolectarDeAUno(E num: numero)
   variables
-    avInicial, caInicial: numero
+    avOri, caOri: numero
   comenzar
-    avInicial:= PosAv
-    caInicial:= PosCa
-    
+    avOri:= PosAv
+    caOri:= PosCa
+    repetir num
+      BloquearEsquina(100,1)
+      Pos(100,1)
+      tomarFlor
+      Pos(avOri, caOri)
+      LiberarEsquina(100,1)
+      depositarFlor
   fin
   
+  proceso EnviarMensajeCant (E ID: numero; E cant: numero)
+  comenzar
+    si (ID = 1)
+      EnviarMensaje(cant, r1)
+    sino
+      si (ID = 2)
+        EnviarMensaje(cant, r2)
+      sino
+        EnviarMensaje(cant, r3)
+  fin
   
 areas
-  areaRobotCliente1: AreaC (10,1,10,1)
-  areaRobotCliente2: AreaC (11,1,11,1)
-  areaRobotCliente3: AreaC (12,1,12,1)
+  areaRobotCliente1: AreaP (10,1,10,1)
+  areaRobotCliente2: AreaP (11,1,11,1)
+  areaRobotCliente3: AreaP (12,1,12,1)
   
-  areaRobotServidor: AreaC (13,1,13,1)
+  areaRobotServidor: AreaP (13,1,13,1)
   
   areaDeposito: AreaC (100,1,100,1)
   
-  
 robots
+
+  robot cliente
+  variables
+    cantARecolectar: numero
+    ID: numero
+  comenzar
+    RecibirMensaje(ID, rServ)
+    repetir 4
+      EnviarMensaje(ID, rServ)
+      RecibirMensaje(cantARecolectar, rServ)
+      recolectarDeAUno(cantARecolectar)
+    EnviarMensaje(0, rServ)
+  fin
+  
   robot servidor
   variables
     cantRobotsTerminados: numero
-    termino: boolean
-    cantPapeles: numero
+    avOri, caOri: numero
     ID: numero
-    avInicial, caInicial: numero
+    cant: numero
   comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, r3)
     cantRobotsTerminados:= 0
-    avInicial:= PosAv
-    caInicial:= PosCa
-    EnviarMensaje(1, robotCliente1)
-    EnviarMensaje(2, robotCliente2)
-    EnviarMensaje(3, robotCliente3)
+    avOri:= PosAv
+    caOri:= PosCa
     mientras (cantRobotsTerminados < 3)
-      Random(cantPapeles, 1,5)
       RecibirMensaje(ID, *)
-      si (ID = 1)
-        RecibirMensaje(termino, robotCliente1)
-      sino
-        si (ID = 2)
-          RecibirMensaje(termino, robotCliente2)
-        sino
-          RecibirMensaje(termino, robotCliente3)
-
-      si (termino = F)
-        cantRobotsTerminados:= cantRobotsTerminados + 1
-        
-      sino
+      si (ID <> 0)
+        Random(cant, 1,5)
         BloquearEsquina(100,1)
         Pos(100,1)
-        repetir cantPapeles
-          depositarPapel
-        Pos(avInicial, caInicial)
+        repetir cant
+          depositarFlor
+        Pos(avOri, caOri)
         LiberarEsquina(100,1)
-      
-        si (ID = 1)
-          EnviarMensaje(cantPapeles, robotCliente1)
-        sino
-          si (ID = 2)
-            EnviarMensaje(cantPapeles, robotCliente2)
-          sino
-            EnviarMensaje(cantPapeles, robotCliente3)
+        EnviarMensajeCant(ID, cant)
+      sino
+        cantRobotsTerminados:= cantRobotsTerminados + 1
   fin
-  
-  robot cliente
-  variables
-    avInicial, caInicial: numero
-    cantPapelesDepositados: numero
-    quienSoy: numero
-  comenzar
-    avInicial:= PosAv
-    caInicial:= PosCa
-    RecibirMensaje(quienSoy, robotServidor)
-    repetir 4
-      EnviarMensaje(quienSoy, robotServidor)
-      EnviarMensaje(V, robotServidor)
-      RecibirMensaje(cantPapelesDepositados, robotServidor)
-      BloquearEsquina(100,1)
-      Pos(100,1)
-      repetir cantPapelesDepositados
-        tomarPapel
-      Pos(avInicial, caInicial)
-      LiberarEsquina(100,1)
-      mientras (HayPapelEnLaBolsa)
-        depositarPapel
-    
-    EnviarMensaje(quienSoy, robotServidor)
-    EnviarMensaje(F, robotServidor)
-  fin
-  
   
 variables
-  robotServidor: servidor
-  robotCliente1: cliente
-  robotCliente2: cliente
-  robotCliente3: cliente
+  r1: cliente
+  r2: cliente
+  r3: cliente
+  rServ: servidor
 comenzar
-  AsignarArea(robotCliente1, areaRobotCliente1)
-  AsignarArea(robotCliente2, areaRobotCliente2)
-  AsignarArea(robotCliente3, areaRobotCliente3)
+  AsignarArea(r1, areaRobotCliente1)
+  AsignarArea(r2, areaRobotCliente2)
+  AsignarArea(r3, areaRobotCliente3)
+  AsignarArea(rServ, areaRobotServidor)
   
-  AsignarArea(robotServidor, areaRobotServidor)
+  AsignarArea(r1, areaDeposito)
+  AsignarArea(r2, areaDeposito)
+  AsignarArea(r3, areaDeposito)
+  AsignarArea(rServ, areaDeposito)
   
-  AsignarArea(robotCliente1, areaDeposito)
-  AsignarArea(robotCliente2, areaDeposito)
-  AsignarArea(robotCliente3, areaDeposito)
-  AsignarArea(robotServidor, areaDeposito)
-  
-  Iniciar(robotCliente1, 10,1)
-  Iniciar(robotCliente2, 11,1)
-  Iniciar(robotCliente3, 12,1)
-  Iniciar(robotServidor, 13,1)
+  Iniciar(r1, 10,1)
+  Iniciar(r2, 11,1)
+  Iniciar(r3, 12,1)
+  Iniciar(rServ, 13,1)
 fin
