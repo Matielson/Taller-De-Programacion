@@ -166,16 +166,15 @@ robots
         procesarEsq(cantFlo)
         cantEsq:= cantEsq + 1
         mover
-      si (PosAv <> 100)
-        si (HayFlorEnLaBolsa)
-          depositarTodoEsq10
-          EnviarMensaje(V, rCosechador)
-      sino
-        procesarEsq(cantFlo)
-        cantEsq:= cantEsq + 1
-        si (cantFlo = 10) | (cantEsq = 15) & (HayFlorEnLaBolsa)
-          depositarTodoEsq10
-          EnviarMensaje(V, rCosechador)
+      si (PosAv <> 100) & (cantFlo > 0)
+        depositarTodoEsq10
+        EnviarMensaje(V, rCosechador)
+
+    procesarEsq(cantFlo)
+    cantEsq:= cantEsq + 1
+    si (cantFlo = 10) | (cantEsq = 15) & (HayFlorEnLaBolsa)
+      depositarTodoEsq10
+      EnviarMensaje(V, rCosechador)
     EnviarMensaje(F, rCosechador)
   fin
   
