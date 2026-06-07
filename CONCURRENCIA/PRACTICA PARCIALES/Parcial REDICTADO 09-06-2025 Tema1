@@ -1,0 +1,276 @@
+Dos equipos de dos robots cada uno juegan una competencia. 
+En cada equipo hay un robot recolector que junta objetos y un robot depositador que los debe dejar en cada esquina de la calle asignada al equipo. 
+El primer equipo en llenar su calle con los objetos correspondientes gana el juego. 
+Un equipo jugará con flores y el otro con papeles y existen suficientes objetos para jugar. 
+La base del campo de juego se encuentra vacía.
+
+El robot recolector debe juntar un objeto de la fuente del equipo y luego depositarlo en la base del campo de juego, 
+luego el depositador toma el objeto de la base y lo deposita en una esquina de la calle hasta completar el recorrido. 
+Un robot fiscalizador es el encargado de decir qué equipo ganó el juego.
+
+matipunto2
+matipunto2_83592
+En línea
+
+matipunto — 06/05/2026 18:33
+
+matipunto — 02/06/2026 22:26
+---------------------------------------------------------------------------------------------------------------------------------
+PARCIALES CONCURRENCIA 
+
+
+
+
+
+Imagen
+Imagen
+matipunto — 03/06/2026 13:12
+PARCIAL REDICTADO 09-06-2025 
+Imagen
+programa Parcial09062025
+
+procesos
+  
+  {PROCESOS EQUIPO AZUL}
+  
+
+programa Parcial09062025.txt
+4 KB
+matipunto — 03/06/2026 14:46
+PARCIAL REDICTADO 09-06-2025 TEMA 2 
+Imagen
+programa ParcialTemaDos09062025
+
+procesos
+  proceso hacerEtapa(E medida: numero; ES cant: numero)
+  comenzar
+    repetir medida
+
+programa ParcialTemaDos09062025.txt
+4 KB
+matipunto — 04/06/2026 15:11
+PARCIAL TURNO P 2025
+Imagen
+programa ParcialTurnoP2025
+
+procesos
+
+  proceso limpiarEsqPapeles (ES cantPapeles: numero)
+  comenzar
+
+programa ParcialTurnoP2025.txt
+3 KB
+vitorino2005 — 04/06/2026 19:09
+hola!
+hiciste alguno de los de aca?
+asi hago
+marcamelo si queres
+vitorino2005 — 04/06/2026 19:11
+hago este creo
+vitorino2005 — 04/06/2026 19:29
+esta complicao eso
+ni lo empece
+matipunto — 04/06/2026 20:40
+PARCIAL TURNO L 2025
+Imagen
+programa ParcialTurnoL2025
+
+procesos
+
+  proceso procesoEsq (ES cantFlores: numero)
+  variables
+
+programa ParcialTurnoL2025.txt
+3 KB
+vitorino2005 — 04/06/2026 20:45
+Propuesta Actividad Fecha Nota Resultado Nro. Acta Año Académico Turno Examen
+Actuación provisoria - Exámenes
+1 de 1 04/06/2026 20:45:16
+Anal Prog Univ Conceptos de Algoritmos, Datos y Programas 26/05/2026 2 Reprobado 28400 2026 33 - Mayo 2026
+Conceptos de Algoritmos, Datos y Programas (SI106)
+Examen - 2 (Dos) Reprobado 21/04/2026 - Detalle
+Examen - 2 (Dos) Reprobado 31/03/2026 - Detalle
+Examen - 2 (Dos) Reprobado 24/02/2026 - Detalle
+Examen - 2 (Dos) Reprobado 16/12/2025 - Detalle
+Regularidad - A (Aprobado) Aprobado 16/07/2025 - Detalle
+vitorino2005 — 05/06/2026 9:52
+Imagen
+Imagen
+Imagen
+Imagen
+Imagen
+matipunto2 — 05/06/2026 12:34
+PARCIAL TURNO D 2025
+Imagen
+programa ParcialTurnoD2025
+
+procesos
+
+  proceso limpiarFlores (ES cantFlores: numero)
+  comenzar
+
+programa ParcialTurnoD2025.txt
+4 KB
+matipunto — 05/06/2026 18:28
+PARCIAL REDICTADO TEMA 2 03/06/2024 
+
+programa ejemplo
+
+procesos
+
+  proceso limpiarFlores(ES cantFlores: numero)
+  comenzar
+
+programa Parcial03062024Tema2.txt
+3 KB
+﻿
+programa Parcial09062025
+
+procesos
+  
+  {PROCESOS EQUIPO AZUL}
+  
+  proceso buscarFlorBase
+  variables  
+    avOri, caOri: numero
+  comenzar
+    avOri:= PosAv
+    caOri:= PosCa
+    BloquearEsquina(12,11)
+    Pos(12,11)
+    tomarFlor
+    Pos(avOri+1, caOri)
+    LiberarEsquina(12,11)
+  fin
+  
+  proceso depositarFlorBase (E av: numero; E ca: numero)
+  comenzar
+    BloquearEsquina(12,11)
+    Pos(12,11)
+    depositarFlor
+    Pos(av,ca)
+    LiberarEsquina(12,11)
+  fin
+  
+  
+  {PROCESOS EQUIPO VERDE}
+  
+  proceso buscarPapelBase
+  variables
+    avOri, caOri: numero
+  comenzar
+    avOri:= PosAv
+    caOri:= PosCa
+    BloquearEsquina(12,11)
+    Pos(12,11)
+    tomarPapel
+    Pos(avOri+1, caOri)
+    LiberarEsquina(12,11)
+  fin
+  
+  proceso depositarPapelBase (E av: numero; E ca: numero)
+  comenzar
+    BloquearEsquina(12,11)
+    Pos(12,11)
+    depositarPapel
+    Pos(av,ca)
+    LiberarEsquina(12,11)
+  fin
+  
+areas
+  areaFuenteFlores: AreaP (10,12,10,12)
+  areaFuentePapeles: AreaP (10,10,10,10)
+  
+  areaRecolectorAzul: AreaP (11,12,11,12)
+  areaDepositadorAzul: AreaP (12,12,20,12)
+  
+  areaRecolectorVerde: AreaP (11,10,11,10)
+  areaDepositadorVerde: AreaP (12,10,20,10)
+  
+  areaBase: AreaC (12,11,12,11)
+  
+robots
+
+  robot recolectorAzul
+  variables
+    avanzar: boolean
+    avOri, caOri: numero
+  comenzar
+    avOri:= PosAv
+    caOri:= PosCa
+    RecibirMensaje(avanzar, rDepoAzul)
+    mientras (avanzar = V)
+      Pos(10,12)
+      tomarFlor
+      depositarFlorBase(avOri, caOri)
+      EnviarMensaje(V, rDepoAzul)
+      RecibirMensaje(avanzar, rDepoAzul)
+  fin
+  
+  robot depositadorAzul
+  variables
+    avanzar: boolean
+  comenzar
+    derecha
+    mientras (PosAv <> 20)
+      EnviarMensaje(V, rRecoAzul)
+      RecibirMensaje(avanzar, rRecoAzul)
+      buscarFlorBase
+      depositarFlor
+    EnviarMensaje(F, rRecoAzul)
+  fin
+  
+  robot recolectorVerde
+  variables
+    avanzar: boolean
+    avOri, caOri: numero
+  comenzar
+    avOri:= PosAv
+    caOri:= PosCa
+    RecibirMensaje(avanzar, rDepoVerde)
+    mientras (avanzar = V)
+      Pos(10,10)
+      tomarPapel
+      depositarPapelBase(avOri, caOri)
+      EnviarMensaje(V, rDepoVerde)
+      RecibirMensaje(avanzar, rDepoVerde)
+  fin
+    
+  robot depositadorVerde
+  variables
+    avanzar: boolean
+  comenzar
+    derecha
+    mientras (PosAv <> 20)
+      EnviarMensaje(V, rRecoVerde)
+      RecibirMensaje(avanzar, rRecoVerde)
+      buscarPapelBase
+      depositarPapel
+    EnviarMensaje(F, rRecoVerde)
+  fin 
+  
+variables
+  rRecoAzul: recolectorAzul
+  rDepoAzul: depositadorAzul
+  rRecoVerde: recolectorVerde
+  rDepoVerde: depositadorVerde
+comenzar
+  AsignarArea(rRecoAzul, areaRecolectorAzul)
+  AsignarArea(rDepoAzul, areaDepositadorAzul)
+  
+  AsignarArea(rRecoVerde, areaRecolectorVerde)
+  AsignarArea(rDepoVerde, areaDepositadorVerde)
+  
+  AsignarArea(rRecoAzul, areaFuenteFlores)
+  AsignarArea(rRecoVerde, areaFuentePapeles)
+  
+  AsignarArea(rRecoAzul, areaBase)
+  AsignarArea(rDepoAzul, areaBase)
+  AsignarArea(rRecoVerde, areaBase)
+  AsignarArea(rDepoVerde, areaBase)
+  
+  Iniciar(rRecoAzul, 11,12)
+  Iniciar(rDepoAzul, 12,12)
+  Iniciar(rRecoVerde, 11,10)
+  Iniciar(rDepoVerde, 12,10)
+fin
